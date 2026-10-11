@@ -40,6 +40,11 @@ export function Logo({ className = "" }: { className?: string }) {
   return <img src={asset("/marca/logo.png")} alt="HERARESIN" className={className} />;
 }
 
+/** La muñeca con el ícono de WhatsApp. */
+export function NinaWhatsapp({ className = "" }: { className?: string }) {
+  return <img src={asset("/marca/nina-whatsapp.png")} alt="" aria-hidden className={className} />;
+}
+
 export function Nina({ className = "" }: { className?: string }) {
   return <img src={asset("/marca/nina.png")} alt="" aria-hidden className={className} />;
 }

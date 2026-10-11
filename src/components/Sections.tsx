@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { useActiveProducts, useData } from "@/lib/store";
 import { reelCode, whatsappLink } from "@/lib/utils";
 import { asset } from "@/lib/assets";
-import Pic, { Nina } from "./Pic";
+import Pic, { NinaWhatsapp } from "./Pic";
 import ProductCard from "./ProductCard";
 
 export function PageHero({
@@ -215,7 +215,7 @@ export function CtaWhatsapp({ text = "¿Tienes una idea en mente?" }: { text?: s
   return (
     <section className="px-4">
       <div className="relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/30 bg-hearts p-10 text-center">
-        <Nina className="absolute -bottom-2 left-2 hidden h-40 w-auto md:block" />
+        <NinaWhatsapp className="absolute -bottom-2 left-3 hidden h-44 w-auto md:block" />
         <h2 className="font-display text-3xl font-semibold text-lila-800">{text}</h2>
         <p className="mt-2 text-lila-900/70">Cuéntanos y la hacemos realidad, hecha a mano y a tu medida.</p>
         <a
