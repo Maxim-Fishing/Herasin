@@ -1,12 +1,13 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductGrid from "@/components/ProductGrid";
 import { BackLink, PageHero, Section } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
 
-export default function CategoriaDetalle() {
-  const { slug } = useParams<{ slug: string }>();
+function Detalle() {
+  const slug = useSearchParams().get("s");
   const { categories, loading } = useData();
   const products = useActiveProducts();
   const category = categories.find((c) => c.slug === slug);
@@ -28,5 +29,13 @@ export default function CategoriaDetalle() {
         <ProductGrid products={products.filter((p) => p.categoryId === category.id)} hideCategory />
       </Section>
     </>
+  );
+}
+
+export default function CategoriaPage() {
+  return (
+    <Suspense fallback={<p className="py-20 text-center text-lila-700">Cargando…</p>}>
+      <Detalle />
+    </Suspense>
   );
 }

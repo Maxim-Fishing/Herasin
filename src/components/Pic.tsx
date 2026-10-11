@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import { asset } from "@/lib/assets";
+
 export default function Pic({
   src,
   alt,
@@ -13,7 +15,14 @@ export default function Pic({
   eager?: boolean;
 }) {
   if (src) {
-    return <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} className={`object-cover ${className}`} />;
+    return (
+      <img
+        src={asset(src)}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        className={`object-cover ${className}`}
+      />
+    );
   }
   return (
     <div
@@ -24,4 +33,13 @@ export default function Pic({
       {emoji}
     </div>
   );
+}
+
+/** Logo y niña de la marca (PNG con fondo transparente). */
+export function Logo({ className = "" }: { className?: string }) {
+  return <img src={asset("/marca/logo.png")} alt="HERARESIN" className={className} />;
+}
+
+export function Nina({ className = "" }: { className?: string }) {
+  return <img src={asset("/marca/nina.png")} alt="" aria-hidden className={className} />;
 }

@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HERARESIN
 
-## Getting Started
+Sitio de HERARESIN · Neiva, Huila. Next.js (exportación estática) + Tailwind + Supabase.
 
-First, run the development server:
+## Ver en local
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+node node_modules/next/dist/bin/next dev -p 3100
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sin variables de Supabase el sitio funciona en **modo demo** con el catálogo de ejemplo.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Publicado en GitHub Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Cada `push` a `main` publica el sitio con `.github/workflows/pages.yml`.
 
-## Learn More
+1. GitHub → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. URL final: `https://maxim-fishing.github.io/Herasin/`.
 
-To learn more about Next.js, take a look at the following resources:
+## Conectar Supabase (usuarios, base de datos y fotos)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Crea un proyecto en <https://supabase.com>.
+2. **SQL Editor** → pega `supabase/schema.sql` → *Run*. Al final, descomenta y ejecuta el `insert` con el correo
+   de la administradora.
+3. **Authentication → Providers**: activa *Email* y, si quieres, *Google*.
+   En **URL Configuration** agrega `https://maxim-fishing.github.io/Herasin/admin/` como *Redirect URL*.
+4. **Project Settings → API**: copia *Project URL* y *anon public key*.
+5. En GitHub: **Settings → Secrets and variables → Actions → Variables** crea
+   `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+6. En local: copia `.env.local.example` a `.env.local` con los mismos valores.
+7. Entra a `/admin/`, inicia sesión y toca **Cargar catálogo inicial** en Productos.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Panel `/admin`
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Productos, kits de temporada, categorías, aviso de temporada, ajustes del sitio y usuarios con acceso.
+Las fotos se suben al bucket `fotos` de Supabase Storage.

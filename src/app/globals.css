@@ -1,53 +1,90 @@
 @import "tailwindcss";
 
+/*
+  Paleta HERARESIN (tomada de tus artes finales)
+  rosa fondo #FFE1FC · corazones #FFF0FE · rosa logo #FF9AF5 · lila botella #DEADEA
+  azul vestido #B4D1DA · café puntos #6C483C
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #2b1d4a;
+  --background: #fffafe;
+  --foreground: #5e3b4f;
+  --cafe: #6c483c;
+  --azul: #b4d1da;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-lila-50: #f8f4ff;
-  --color-lila-100: #f0e8fd;
-  --color-lila-200: #e0d0fa;
-  --color-lila-300: #cdb4f6;
-  --color-lila-400: #b794f0;
-  --color-lila-500: #9d72e6;
-  --color-lila-600: #8250d6;
-  --color-lila-700: #6a3dbb;
-  --color-lila-800: #4f2d8f;
-  --color-lila-900: #2b1d4a;
-  --font-sans: var(--font-poppins);
-  --font-display: var(--font-fraunces);
+  --color-cafe: var(--cafe);
+  --color-azul: var(--azul);
+  --color-lila-50: #fff7fe;
+  --color-lila-100: #fff0fe;
+  --color-lila-200: #ffe1fc;
+  --color-lila-300: #f8cdf3;
+  --color-lila-400: #eeb0ec;
+  --color-lila-500: #deadea;
+  --color-lila-600: #c961c2;
+  --color-lila-700: #a8479f;
+  --color-lila-800: #7d3f7b;
+  --color-lila-900: #5e3b4f;
+  --font-sans: var(--font-quicksand);
+  --font-display: var(--font-fredoka);
+  --font-script: var(--font-pacifico);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-family: var(--font-quicksand), system-ui, sans-serif;
 }
+
+/* Corazoncitos suaves de fondo, como en tus artes */
+.bg-hearts {
+  background-color: #ffe1fc;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23fff0fe'%3E%3Cpath d='M40 30c-6-10-22-4-18 9 3 8 18 18 18 18s15-10 18-18c4-13-12-19-18-9z'/%3E%3Cpath d='M135 105c-5-8-17-3-14 7 2 6 14 14 14 14s12-8 14-14c3-10-9-15-14-7z'/%3E%3Cpath d='M120 20c-4-6-12-2-10 5 2 5 10 10 10 10s8-5 10-10c2-7-6-11-10-5z'/%3E%3Cpath d='M30 125c-4-6-12-2-10 5 2 5 10 10 10 10s8-5 10-10c2-7-6-11-10-5z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.bg-hearts-soft {
+  background-color: #fff7fe;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23ffeefc'%3E%3Cpath d='M40 30c-6-10-22-4-18 9 3 8 18 18 18 18s15-10 18-18c4-13-12-19-18-9z'/%3E%3Cpath d='M135 105c-5-8-17-3-14 7 2 6 14 14 14 14s12-8 14-14c3-10-9-15-14-7z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Marco punteado café, igual que tus artes */
+.dotted-frame {
+  border: 3px dotted rgb(108 72 60 / 0.55);
+  border-radius: 2rem;
+}
+.dotted-line { border-top: 3px dotted rgb(108 72 60 / 0.45); }
 
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(6deg); }
+  50% { transform: translateY(-12px) rotate(4deg); }
 }
 @keyframes pop-in {
-  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.45; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
 
-.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-float { animation: float 6s ease-in-out infinite; }
 .animate-pop-in { animation: pop-in 0.35s ease-out both; }
 .animate-fade-up { animation: fade-up 0.7s ease-out both; }
+.animate-twinkle { animation: twinkle 3.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-twinkle { animation: none; }
+  html { scroll-behavior: auto; }
+}
 
 .btn {
   display: inline-flex;
@@ -55,22 +92,24 @@ body {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  font-weight: 700;
   transition: all 0.2s;
   cursor: pointer;
 }
 .btn-primary { background: var(--color-lila-600); color: #fff; }
-.btn-primary:hover { background: var(--color-lila-700); transform: translateY(-1px); box-shadow: 0 8px 20px -8px var(--color-lila-600); }
+.btn-primary:hover { background: var(--color-lila-700); transform: translateY(-1px); box-shadow: 0 8px 20px -10px var(--color-lila-600); }
 .btn-ghost { background: #fff; color: var(--color-lila-700); border: 2px solid var(--color-lila-300); }
-.btn-ghost:hover { background: var(--color-lila-50); border-color: var(--color-lila-500); }
-.btn-wa { background: #25d366; color: #fff; }
-.btn-wa:hover { background: #1ebe5b; transform: translateY(-1px); }
+.btn-ghost:hover { background: var(--color-lila-100); border-color: var(--color-lila-500); }
+.btn-soft { background: var(--color-lila-100); color: var(--color-lila-700); border: 2px solid var(--color-lila-200); }
+.btn-soft:hover { background: var(--color-lila-200); }
+.btn-wa { background: #5fcf8a; color: #fff; }
+.btn-wa:hover { background: #46bd75; transform: translateY(-1px); }
 
 .input {
   width: 100%;
-  border-radius: 0.75rem;
-  border: 1.5px solid var(--color-lila-200);
+  border-radius: 1rem;
+  border: 2px solid var(--color-lila-200);
   background: #fff;
   padding: 0.6rem 0.9rem;
   outline: none;

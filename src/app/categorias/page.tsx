@@ -21,14 +21,16 @@ export default function Categorias() {
               return (
                 <Link
                   key={c.id}
-                  href={`/categorias/${c.slug}`}
-                  className="group overflow-hidden rounded-[2rem] border border-lila-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-lila-200"
+                  href={`/categoria?s=${c.slug}`}
+                  className="group overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/30 bg-white p-2.5 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-lila-200"
                 >
-                  <Pic src={c.image} alt={c.name} emoji={c.emoji} className="aspect-[16/10] w-full text-6xl" />
-                  <div className="p-6">
-                    <h2 className="font-display text-2xl font-bold text-lila-800">{c.name}</h2>
+                  <div className="overflow-hidden rounded-[1.5rem]">
+                    <Pic src={c.image} alt={c.name} emoji={c.emoji} className="aspect-[16/10] w-full text-6xl transition duration-500 group-hover:scale-105" />
+                  </div>
+                  <div className="p-4">
+                    <h2 className="font-display text-2xl font-semibold text-lila-800">{c.emoji} {c.name}</h2>
                     <p className="mt-1 text-sm text-lila-900/70">{c.description}</p>
-                    <p className="mt-3 text-sm font-semibold text-lila-600">{count} productos →</p>
+                    <p className="mt-3 text-sm font-bold text-lila-600">{count} productos →</p>
                   </div>
                 </Link>
               );
