@@ -117,15 +117,15 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              ["💎", "Brillo cristalino"],
-              ["🛡️", "Larga duración"],
-              ["🖼️", "Tus fotos y recuerdos"],
-              ["🤲", "Hecho a mano"],
-            ].map(([icon, label]) => (
-              <div key={label} className="rounded-[1.75rem] border-[3px] border-dotted border-cafe/25 bg-lila-50 p-6 text-center">
-                <div className="text-4xl">{icon}</div>
-                <p className="mt-2 font-display font-semibold text-lila-800">{label}</p>
-              </div>
+              ["/resina/brillo.jpg", "Brillo cristalino"],
+              ["/resina/duracion.jpg", "Larga duración"],
+              ["/resina/fotos.jpg", "Tus fotos y recuerdos"],
+              ["/resina/manos.jpg", "Hecho a mano"],
+            ].map(([src, label]) => (
+              <figure key={label} className="overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-1.5 text-center">
+                <Pic src={src} alt={label} className="aspect-square w-full rounded-[1.25rem]" />
+                <figcaption className="px-1 pb-2 pt-2 font-display text-sm font-semibold text-lila-800 sm:text-base">{label}</figcaption>
+              </figure>
             ))}
           </div>
         </div>
