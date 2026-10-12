@@ -52,6 +52,26 @@ body {
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23ffeefc'%3E%3Cpath d='M40 30c-6-10-22-4-18 9 3 8 18 18 18 18s15-10 18-18c4-13-12-19-18-9z'/%3E%3Cpath d='M135 105c-5-8-17-3-14 7 2 6 14 14 14 14s12-8 14-14c3-10-9-15-14-7z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* Marco de toda la página: punteado café redondeado dentro del fondo rosa.
+   Usa overflow: clip (no hidden) para que el encabezado pegajoso siga funcionando. */
+.page-frame {
+  position: relative;
+  margin: 0.5rem 0.5rem 0.75rem;
+  border: 3px dotted rgb(108 72 60 / 0.5);
+  border-radius: 1.5rem;
+  overflow: clip;
+  background: rgb(255 255 255 / 0.3);
+}
+@media (min-width: 768px) {
+  .page-frame {
+    margin: 0.75rem 1.25rem 1.25rem;
+    border-radius: 2.25rem;
+  }
+}
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* Marco punteado café, igual que tus artes */
 .dotted-frame {
   border: 3px dotted rgb(108 72 60 / 0.55);
@@ -76,13 +96,19 @@ body {
   50% { opacity: 1; transform: scale(1.1); }
 }
 
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.animate-bob { animation: bob 3.5s ease-in-out infinite; }
+
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-pop-in { animation: pop-in 0.35s ease-out both; }
 .animate-fade-up { animation: fade-up 0.7s ease-out both; }
 .animate-twinkle { animation: twinkle 3.2s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-float, .animate-twinkle { animation: none; }
+  .animate-float, .animate-twinkle, .animate-bob { animation: none; }
   html { scroll-behavior: auto; }
 }
 

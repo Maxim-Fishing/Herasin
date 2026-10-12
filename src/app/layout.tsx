@@ -5,6 +5,7 @@ import { DataProvider } from "@/lib/store";
 import { SITE_URL } from "@/lib/assets";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingWhatsapp from "@/components/FloatingWhatsapp";
 
 // Tipografía: títulos redondeados (Fredoka), cuerpo suave (Quicksand) y
 // un script para destacar palabras, en la línea del logo (Pacifico).
@@ -36,11 +37,20 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${quicksand.variable} ${fredoka.variable} ${pacifico.variable} antialiased`}>
-      <body className="flex min-h-screen flex-col">
+      <body className="bg-hearts flex min-h-screen flex-col">
         <DataProvider>
           <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          {/* Marco de la marca: punteado café sobre rosa con corazones, como en tus artes */}
+          <div className="page-frame flex flex-1 flex-col">
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <div aria-hidden className="pointer-events-none absolute bottom-2 right-3 flex items-end gap-0.5 leading-none md:bottom-3 md:right-5">
+              <span className="text-2xl text-lila-500">★</span>
+              <span className="mb-1 text-lg text-lila-400">★</span>
+              <span className="text-3xl text-[#e08fe6]">★</span>
+            </div>
+          </div>
+          <FloatingWhatsapp />
         </DataProvider>
       </body>
     </html>

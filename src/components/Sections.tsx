@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import type { Product } from "@/lib/types";
 import { useActiveProducts, useData } from "@/lib/store";
 import { reelCode, whatsappLink } from "@/lib/utils";
 import { asset } from "@/lib/assets";
 import Pic, { NinaWhatsapp } from "./Pic";
-import ProductCard from "./ProductCard";
 
 export function PageHero({
   title,
@@ -45,7 +45,9 @@ export function Section({
   script?: string;
 }) {
   return (
-    <section className={tint ? "bg-lila-100/70 py-16" : "py-16"}>
+    <section
+      className={`border-t-[3px] border-dotted border-cafe/20 py-16 first:border-t-0 ${tint ? "bg-white/45" : ""}`}
+    >
       <div className="mx-auto max-w-6xl px-4">
         {title && (
           <div className="mb-10 text-center">
@@ -140,36 +142,194 @@ export function VideoBlock() {
   );
 }
 
-/** Bucket de fe: línea «Caminando con Jesús». */
-export function FaithBlock() {
-  const products = useActiveProducts();
-  const { seasons } = useData();
-  const faith = seasons.find((s) => s.slug === "fe");
-  const items = products.filter((p) => faith && p.seasonIds.includes(faith.id)).slice(0, 4);
-  if (!items.length) return null;
+type FaithSlide = { key: string; product: Product; image: string };
+
+/** Frases que acompañan cada tarjeta (texto propio de la línea). */
+const faithPhrases = [
+  "Tu palabra es una lámpara a mis pies y una luz en mi camino.",
+  "Una palabra de aliento para cada momento de tu vida.",
+  "Él estaba ahí cuando pediste fuerzas para no desistir.",
+  "Para ti, o para alguien especial que lo necesita.",
+];
+
+/**
+ * Banda horizontal de la línea de fe: tarjetas grandes con la foto en arco
+ * (como una ventana de capilla). Avanza sola, se desliza con el dedo y
+ * también se maneja con flechas y puntos.
+ */
+function FaithCarousel({ slides, slug }: { slides: FaithSlide[]; slug?: string }) {
+  const track = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(0);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const n = slides.length;
+
+  const go = useCallback(
+    (i: number) => {
+      const el = track.current;
+      if (!el || !n) return;
+      const child = el.children[((i % n) + n) % n] as HTMLElement | undefined;
+      if (!child) return;
+      el.scrollTo({
+        left: child.offsetLeft - (el.clientWidth - child.clientWidth) / 2,
+        behavior: "smooth",
+      });
+    },
+    [n],
+  );
+
+  // Avance automático cada 5 s (se detiene al tocar/pasar el cursor).
+  useEffect(() => {
+    if (paused || n < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setInterval(() => go(activeRef.current + 1), 5000);
+    return () => clearInterval(t);
+  }, [paused, n, go]);
+
+  const onScroll = () => {
+    const el = track.current;
+    if (!el) return;
+    const mid = el.scrollLeft + el.clientWidth / 2;
+    let best = 0;
+    let dist = Infinity;
+    Array.from(el.children).forEach((c, i) => {
+      const ch = c as HTMLElement;
+      const d = Math.abs(ch.offsetLeft + ch.clientWidth / 2 - mid);
+      if (d < dist) { dist = d; best = i; }
+    });
+    if (best !== activeRef.current) {
+      activeRef.current = best;
+      setActive(best);
+    }
+  };
+
   return (
-    <section className="bg-hearts py-16">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="mb-10 text-center">
+    <section
+      className="bg-hearts relative overflow-hidden border-t-[3px] border-dotted border-cafe/20 py-16"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      {/* resplandor suave detrás de las tarjetas */}
+      <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-[26rem] w-[44rem] max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/60 blur-3xl" />
+
+      <div className="relative mx-auto max-w-6xl px-4">
+        <div className="mb-8 text-center">
           <p className="font-script text-2xl text-lila-600">Con fe y esperanza</p>
           <h2 className="font-display text-3xl font-semibold text-lila-800 md:text-4xl">✝️ Caminando con Jesús</h2>
           <p className="mx-auto mt-3 max-w-2xl text-lila-900/75">
             Una línea con propósito: frases y reflexiones para ti o para alguien especial que lo necesite.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {items.map((p) => (
-            <ProductCard key={p.id} product={p} />
+      </div>
+
+      <div className="relative">
+        <div
+          ref={track}
+          onScroll={onScroll}
+          role="region"
+          aria-roledescription="carrusel"
+          aria-label="Línea de fe Caminando con Jesús"
+          className="no-scrollbar relative flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-[7vw] pb-4 md:px-[max(1rem,calc(50%-340px))]"
+        >
+          {slides.map((s, i) => (
+            <article
+              key={s.key}
+              aria-label={`${i + 1} de ${n}: ${s.product.name}`}
+              className="w-[86vw] max-w-[680px] shrink-0 snap-center"
+            >
+              <div className="grid h-full overflow-hidden rounded-[2.25rem] border-[3px] border-dotted border-cafe/40 bg-white/95 shadow-xl shadow-lila-200/70 sm:grid-cols-[0.85fr_1.15fr]">
+                {/* ventana en arco */}
+                <div className="relative flex items-end justify-center bg-gradient-to-b from-lila-200 via-lila-100 to-white px-6 pb-5 pt-8">
+                  <span aria-hidden className="absolute left-4 top-3 text-xl text-lila-400">✦</span>
+                  <span aria-hidden className="absolute right-5 top-8 text-sm text-lila-300">✦</span>
+                  <div className="relative w-full max-w-[250px] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-white bg-lila-200 shadow-lg">
+                    <Pic src={s.image} alt={s.product.name} emoji="✝️" className="aspect-[3/4] w-full" />
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center p-6 text-left">
+                  <p className="font-script text-lg text-lila-500">Caminando con Jesús</p>
+                  <h3 className="font-display text-2xl font-semibold leading-tight text-lila-800">{s.product.name}</h3>
+                  <blockquote className="mt-3 border-l-[3px] border-dotted border-lila-400 pl-3 font-script text-lg leading-snug text-lila-700">
+                    “{faithPhrases[i % faithPhrases.length]}”
+                  </blockquote>
+                  <p className="mt-3 line-clamp-3 text-sm text-lila-900/70">{s.product.description}</p>
+                  <Link href={`/producto?s=${s.product.slug}`} className="btn btn-primary mt-5 self-start">
+                    Ver y cotizar
+                  </Link>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
-        {faith && (
-          <p className="mt-8 text-center">
-            <Link href={`/temporada?s=${faith.slug}`} className="btn btn-ghost">Ver toda la línea de fe</Link>
-          </p>
+
+        {n > 1 && (
+          <>
+            <button
+              type="button"
+              aria-label="Anterior"
+              onClick={() => go(active - 1)}
+              className="absolute left-2 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-lila-300 bg-white/95 text-2xl text-lila-700 shadow-lg transition hover:bg-lila-100 md:flex"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              aria-label="Siguiente"
+              onClick={() => go(active + 1)}
+              className="absolute right-2 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-lila-300 bg-white/95 text-2xl text-lila-700 shadow-lg transition hover:bg-lila-100 md:flex"
+            >
+              ›
+            </button>
+          </>
         )}
       </div>
+
+      {n > 1 && (
+        <div className="mt-4 flex justify-center gap-2" role="tablist" aria-label="Elegir tarjeta">
+          {slides.map((s, i) => (
+            <button
+              key={s.key}
+              type="button"
+              role="tab"
+              aria-selected={i === active}
+              aria-label={`Ir a la tarjeta ${i + 1}`}
+              onClick={() => go(i)}
+              className={`h-2.5 rounded-full transition-all ${i === active ? "w-8 bg-lila-600" : "w-2.5 bg-lila-300 hover:bg-lila-400"}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {slug && (
+        <p className="relative mt-8 text-center">
+          <Link href={`/temporada?s=${slug}`} className="btn btn-ghost">Ver toda la línea de fe</Link>
+        </p>
+      )}
     </section>
   );
+}
+
+/** Bucket de fe: línea «Caminando con Jesús». */
+export function FaithBlock() {
+  const products = useActiveProducts();
+  const { seasons } = useData();
+  const faith = seasons.find((s) => s.slug === "fe");
+  const slides: FaithSlide[] = products
+    .filter((p) => faith && p.seasonIds.includes(faith.id))
+    .flatMap((p) =>
+      (p.images.length ? p.images.slice(0, 3) : [""]).map((image, i) => ({
+        key: `${p.id}-${i}`,
+        product: p,
+        image,
+      })),
+    )
+    .slice(0, 8);
+  if (!slides.length) return null;
+  return <FaithCarousel slides={slides} slug={faith?.slug} />;
 }
 
 export function Testimonials() {
