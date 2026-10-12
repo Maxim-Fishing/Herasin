@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
+import CardGrid from "@/components/CardGrid";
 import Pic from "@/components/Pic";
 import { BackLink, PageHero, Section } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
@@ -61,9 +62,9 @@ function Kit() {
         {items.length === 0 ? (
           <p className="rounded-3xl bg-lila-50 p-10 text-center text-lila-700">Este kit aún no tiene piezas. ¡Pronto! 💜</p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
+          <CardGrid>
             {items.map((p) => <ProductCard key={p.id} product={p} />)}
-          </div>
+          </CardGrid>
         )}
       </Section>
     </>

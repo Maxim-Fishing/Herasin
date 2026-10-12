@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Pic, { Nina } from "@/components/Pic";
 import ProductCard from "@/components/ProductCard";
+import CardGrid from "@/components/CardGrid";
 import QuoteModal from "@/components/QuoteModal";
 import { BackLink, Section } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
@@ -187,9 +188,9 @@ function Ficha() {
 
       {related.length > 0 && (
         <Section title="También te puede gustar" tint>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          <CardGrid>
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
-          </div>
+          </CardGrid>
         </Section>
       )}
 

@@ -98,36 +98,38 @@ export default function Home() {
 
       {/* RESINA: foco principal */}
       <Section script="Nuestra especialidad" title="¿Qué es la resina?" subtitle="Aprende de qué se trata el material con el que creamos casi todo.">
-        <div className="grid items-center gap-8 md:grid-cols-2">
-          <div className="space-y-4 text-lila-900/80">
-            <p>
-              La <strong className="text-lila-700">resina epóxica</strong> es un material líquido que, al mezclarse con
-              su catalizador, endurece y queda transparente y brillante.
-            </p>
-            <p>
-              Con ella <strong className="text-lila-700">encapsulamos fotos, flores, brillos y colores</strong> dentro de
-              llaveros, recordatorios, cuadros, agendas y más. Cada pieza se vierte en un molde, se cura por 24 horas
-              y se pule a mano.
-            </p>
-            <p className="rounded-3xl bg-lila-100 p-4 text-sm">
-              🎨 También trabajamos <strong>sublimación</strong> para tazas, botellas y forros, con diseños a todo color
-              que no se despintan.
-            </p>
-            <Link href="/como-lo-hacemos" className="btn btn-primary">Ver el proceso paso a paso</Link>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              ["/resina/brillo.jpg", "Brillo cristalino"],
-              ["/resina/duracion.jpg", "Larga duración"],
-              ["/resina/fotos.jpg", "Tus fotos y recuerdos"],
-              ["/resina/manos.jpg", "Hecho a mano"],
-            ].map(([src, label]) => (
-              <figure key={label} className="overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-1.5 text-center">
-                <Pic src={src} alt={label} className="aspect-square w-full rounded-[1.25rem]" />
-                <figcaption className="px-1 pb-2 pt-2 font-display text-sm font-semibold text-lila-800 sm:text-base">{label}</figcaption>
-              </figure>
-            ))}
-          </div>
+        <div className="mx-auto grid max-w-4xl gap-5 text-lila-900/80 md:grid-cols-2 md:gap-8">
+          <p className="text-lg leading-relaxed">
+            La <strong className="text-lila-700">resina epóxica</strong> es un material líquido que, al mezclarse con
+            su catalizador, endurece y queda transparente y brillante.
+          </p>
+          <p className="text-lg leading-relaxed">
+            Con ella <strong className="text-lila-700">encapsulamos fotos, flores, brillos y colores</strong> dentro de
+            llaveros, recordatorios, cuadros, agendas y más. Cada pieza se vierte en un molde, se cura por 24 horas
+            y se pule a mano.
+          </p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
+          {[
+            ["/resina/brillo.jpg", "Brillo cristalino"],
+            ["/resina/duracion.jpg", "Larga duración"],
+            ["/resina/fotos.jpg", "Tus fotos y recuerdos"],
+            ["/resina/manos.jpg", "Hecho a mano"],
+          ].map(([src, label]) => (
+            <figure key={label} className="overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-1.5 text-center">
+              <Pic src={src} alt={label} className="aspect-square w-full rounded-[1.25rem]" />
+              <figcaption className="px-1 pb-2 pt-2 font-display text-sm font-semibold text-lila-800 sm:text-base">{label}</figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-4 text-center">
+          <p className="rounded-3xl bg-lila-100 px-5 py-3 text-sm text-lila-900/80">
+            🎨 También trabajamos <strong>sublimación</strong> para tazas, botellas y forros, con diseños a todo color
+            que no se despintan.
+          </p>
+          <Link href="/como-lo-hacemos" className="btn btn-primary">Ver el proceso paso a paso</Link>
         </div>
       </Section>
 

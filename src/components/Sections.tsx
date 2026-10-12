@@ -21,7 +21,7 @@ export function PageHero({
 }) {
   return (
     <section className={`relative overflow-hidden border-b-[3px] border-dotted border-cafe/25 ${soft ? "bg-hearts-soft" : "bg-hearts"}`}>
-      <div className="mx-auto max-w-6xl px-4 py-14 text-center md:py-20">
+      <div className="mx-auto max-w-6xl px-4 py-10 text-center md:py-14">
         {emoji && <div className="animate-float mb-3 text-5xl">{emoji}</div>}
         <h1 className={`font-display text-4xl font-semibold md:text-5xl ${soft ? "text-lila-700" : "text-lila-800"}`}>{title}</h1>
         {subtitle && <p className="mx-auto mt-4 max-w-2xl text-lg text-lila-900/70">{subtitle}</p>}
@@ -46,7 +46,7 @@ export function Section({
 }) {
   return (
     <section
-      className={`border-t-[3px] border-dotted border-cafe/20 py-16 first:border-t-0 ${tint ? "bg-white/45" : ""}`}
+      className={`border-t-[3px] border-dotted border-cafe/20 py-12 first:border-t-0 md:py-14 ${tint ? "bg-white/45" : ""}`}
     >
       <div className="mx-auto max-w-6xl px-4">
         {title && (
@@ -93,7 +93,7 @@ export function Steps({ steps }: { steps: Step[] }) {
 /** Video corto de resina, en formato historia con tu arte final. */
 export function ResinVideo({ className = "" }: { className?: string }) {
   return (
-    <div className={`mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/40 bg-lila-200 shadow-xl shadow-lila-200 sm:max-w-[360px] md:max-w-[420px] ${className}`}>
+    <div className={`mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/40 bg-lila-200 shadow-xl shadow-lila-200 sm:max-w-[340px] md:max-w-[360px] ${className}`}>
       <video
         src={asset("/video/resina.mp4")}
         poster={asset("/video/resina-poster.jpg")}
@@ -112,30 +112,30 @@ export function ResinVideo({ className = "" }: { className?: string }) {
 export function VideoBlock() {
   return (
     <Section script="Mira la magia" title="La resina en acción">
-      <div className="grid items-center gap-10 md:grid-cols-[minmax(0,420px)_1fr] md:gap-14">
+      <div className="grid gap-8 md:grid-cols-[minmax(0,360px)_1fr] md:items-stretch md:gap-12">
         <ResinVideo />
-        <div className="text-center md:text-left">
+        <div className="flex flex-col gap-6 text-center md:text-left">
           <p className="text-xl leading-relaxed text-lila-900/85">
             Cada pieza nace en el taller: se mezcla, se vierte, se cura y se pule a mano.
             Mira algunas de nuestras creaciones en resina.
           </p>
 
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          <ul className="grid flex-1 auto-rows-fr gap-3 sm:grid-cols-2">
             {[
               ["🧪", "Mezcla y color", "Pigmentos, brillos y flores a tu gusto."],
               ["💧", "Vertido a mano", "Pieza por pieza, sin producción en masa."],
               ["⏳", "Curado de 24 horas", "Para lograr ese brillo cristalino."],
               ["✨", "Pulido y empaque", "Acabados cuidados antes de entregar."],
             ].map(([icon, title, text]) => (
-              <li key={title} className="rounded-[1.5rem] border-[3px] border-dotted border-cafe/25 bg-white p-4 text-left">
-                <span className="text-2xl">{icon}</span>
-                <p className="mt-1 font-display font-semibold text-lila-800">{title}</p>
+              <li key={title} className="flex flex-col justify-center rounded-[1.5rem] border-[3px] border-dotted border-cafe/25 bg-white p-5 text-left">
+                <span className="text-4xl">{icon}</span>
+                <p className="mt-2 font-display text-lg font-semibold text-lila-800">{title}</p>
                 <p className="text-sm text-lila-900/70">{text}</p>
               </li>
             ))}
           </ul>
 
-          <Link href="/como-lo-hacemos" className="btn btn-primary mt-7">Ver el proceso paso a paso</Link>
+          <Link href="/como-lo-hacemos" className="btn btn-primary self-center md:self-start">Ver el proceso paso a paso</Link>
         </div>
       </div>
     </Section>

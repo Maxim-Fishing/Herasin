@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Pic from "@/components/Pic";
 import {
   CourseBlock,
   CtaWhatsapp,
@@ -28,17 +30,37 @@ export default function ComoLoHacemos() {
       </Section>
 
       <Section title="Míralo en video" tint>
-        <div className="grid items-center gap-10 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-[minmax(0,360px)_1fr] md:items-stretch md:gap-12">
           <ResinVideo />
-          <div className="space-y-4 text-center text-lila-900/80 md:text-left">
-            <p className="text-lg">
-              Estas son algunas de las piezas que salen de nuestro taller: recordatorios, libretas, portavasos,
-              llaveros y más, todas en resina.
+          <div className="flex flex-col gap-5 text-center text-lila-900/80 md:text-left">
+            <p className="text-lg leading-relaxed">
+              Estas son algunas de las piezas que salen de nuestro taller, todas en resina. No trabajamos con
+              producción en masa: cada pedido pasa por nuestras manos, y por eso cada pieza tiene pequeñas
+              diferencias que la hacen única.
             </p>
-            <p>
-              No trabajamos con producción en masa: cada pedido pasa por nuestras manos, y por eso cada pieza
-              tiene pequeñas diferencias que la hacen única.
-            </p>
+            <ul className="grid flex-1 auto-rows-fr grid-cols-2 gap-3 sm:grid-cols-3">
+              {[
+                ["/fotos/012.jpg", "Recordatorios"],
+                ["/fotos/030.jpg", "Llaveros"],
+                ["/fotos/108.jpg", "Libretas"],
+                ["/fotos/136.jpg", "Portavasos"],
+                ["/fotos/042.jpg", "Cuadros"],
+                ["/fotos/096.jpg", "Agendas"],
+              ].map(([src, label]) => (
+                <li key={label}>
+                  <Link
+                    href="/categoria?s=resina"
+                    className="group relative block h-full min-h-[150px] overflow-hidden rounded-[1.5rem] border-[3px] border-dotted border-cafe/30 bg-lila-200"
+                  >
+                    <Pic src={src} alt={label} className="absolute inset-0 h-full w-full transition duration-500 group-hover:scale-105" />
+                    <span className="absolute inset-x-2 bottom-2 rounded-full bg-white/90 px-3 py-1 text-center text-sm font-bold text-lila-800">
+                      {label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link href="/categoria?s=resina" className="btn btn-primary self-center md:self-start">Ver todo en resina</Link>
           </div>
         </div>
       </Section>

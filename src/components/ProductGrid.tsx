@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import ProductCard from "./ProductCard";
+import CardGrid from "./CardGrid";
 import { useData } from "@/lib/store";
 import type { Product } from "@/lib/types";
 
@@ -62,11 +63,11 @@ export default function ProductGrid({
           Aún no hay productos aquí. ¡Pronto agregaremos más! 💜
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
+        <CardGrid>
           {filtered.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
-        </div>
+        </CardGrid>
       )}
     </div>
   );
