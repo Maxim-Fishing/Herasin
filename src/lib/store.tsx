@@ -20,6 +20,9 @@ import type { Category, Product, Season, SiteSettings } from "./types";
 
 type Table = "products" | "seasons" | "categories";
 
+const RELOAD_EVENT = "heraresin-reload";
+const notifyWrite = () => window.dispatchEvent(new Event(RELOAD_EVENT));
+
 type Data = {
   products: Product[];
   seasons: Season[];
@@ -78,9 +81,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Carga inicial desde Supabase (un solo fetch; sin suscripciones en tiempo real).
+    // Carga inicial desde Supabase y recarga cuando el panel guarda algo.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void reload();
+    const onWrite = () => void reload();
+    window.addEventListener(RELOAD_EVENT, onWrite);
+    return () => window.removeEventListener(RELOAD_EVENT, onWrite);
   }, [reload]);
 
   const value = useMemo(() => ({ ...data, reload }), [data, reload]);
@@ -115,14 +121,17 @@ function fail(error: { message: string } | null) {
 export async function saveItem<T extends { id: string }>(table: Table, item: T) {
   const { id, ...data } = item;
   fail((await requireDb().from(table).upsert({ id, data, updated_at: new Date().toISOString() })).error);
+  notifyWrite();
 }
 
 export async function deleteItem(table: Table, id: string) {
   fail((await requireDb().from(table).delete().eq("id", id)).error);
+  notifyWrite();
 }
 
 export async function saveSettings(settings: SiteSettings) {
   fail((await requireDb().from("settings").upsert({ id: "site", data: settings })).error);
+  notifyWrite();
 }
 
 /** Carga el catálogo inicial (productos, temporadas, categorías y ajustes). */
@@ -134,6 +143,7 @@ export async function importSeed() {
   fail((await db.from("categories").upsert(pack(demoCategories))).error);
   fail((await db.from("products").upsert(pack(demoProducts))).error);
   fail((await db.from("settings").upsert({ id: "site", data: defaultSettings })).error);
+  notifyWrite();
 }
 
 /* ---------- Administradores ---------- */

@@ -3,12 +3,12 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Pic from "@/components/Pic";
+import Pic, { Nina } from "@/components/Pic";
 import ProductCard from "@/components/ProductCard";
 import QuoteModal from "@/components/QuoteModal";
 import { BackLink, Section } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
-import { PRODUCT_NOTICES, formatPrice, quoteMessage } from "@/lib/utils";
+import { PRODUCT_NOTICES, formatPrice, isDateOption, quoteMessage } from "@/lib/utils";
 
 function Ficha() {
   const slug = useSearchParams().get("s");
@@ -16,7 +16,8 @@ function Ficha() {
   const products = useActiveProducts();
   const product = products.find((p) => p.slug === slug);
   const [img, setImg] = useState(0);
-  const [chosen, setChosen] = useState<string[]>([]);
+  // forma de personalizar elegida → dato que escribe la clienta
+  const [chosen, setChosen] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
   const [message, setMessage] = useState<string | null>(null);
 
@@ -40,14 +41,20 @@ function Ficha() {
     .slice(0, 4);
 
   const toggle = (o: string) =>
-    setChosen((c) => (c.includes(o) ? c.filter((x) => x !== o) : [...c, o]));
+    setChosen((c) => {
+      if (o in c) return Object.fromEntries(Object.entries(c).filter(([k]) => k !== o));
+      return { ...c, [o]: "" };
+    });
 
   const quote = () =>
     setMessage(
       quoteMessage({
         product,
         category: category?.name,
-        options: chosen,
+        // se respeta el orden en que el producto define sus opciones
+        options: product.options
+          .filter((o) => o in chosen)
+          .map((o) => ({ label: o, value: chosen[o] })),
         notes,
         url: window.location.href,
       }),
@@ -65,8 +72,9 @@ function Ficha() {
         <div className="grid gap-10 md:grid-cols-2">
           {/* FOTO */}
           <div>
-            <div className="overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/35 bg-lila-200 p-2">
+            <div className="relative overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/35 bg-lila-200 p-2">
               <Pic src={product.images[img]} alt={product.name} className="aspect-square w-full rounded-[1.5rem] text-8xl" />
+              <Nina className="pointer-events-none absolute bottom-3 left-3 h-24 w-auto drop-shadow-[0_3px_6px_rgba(94,59,79,0.35)] sm:h-28" />
             </div>
             {product.images.length > 1 && (
               <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
@@ -93,10 +101,10 @@ function Ficha() {
             <p className="mt-4 whitespace-pre-line text-lila-900/80">{product.description}</p>
 
             <h2 className="mt-7 font-display text-lg font-semibold text-lila-800">✨ Personalízalo</h2>
-            <p className="text-sm text-lila-900/60">Toca lo que quieres personalizar; irá en tu mensaje.</p>
+            <p className="text-sm text-lila-900/60">Toca lo que quieres personalizar y escribe el dato; irá en tu mensaje.</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {product.options.map((o) => {
-                const on = chosen.includes(o);
+                const on = o in chosen;
                 return (
                   <li key={o}>
                     <button
@@ -113,9 +121,37 @@ function Ficha() {
                 );
               })}
             </ul>
+
+            {/* Un campo por cada forma de personalizar elegida */}
+            {Object.keys(chosen).length > 0 && (
+              <div className="mt-4 space-y-3 rounded-[1.5rem] border-2 border-lila-200 bg-lila-50 p-4">
+                {product.options.filter((o) => o in chosen).map((o) => (
+                  <label key={o} className="block">
+                    <span className="mb-1 block text-sm font-bold text-lila-800">{o}</span>
+                    {o.toLowerCase().includes("foto") ? (
+                      <input
+                        className="input"
+                        placeholder="Te la pedimos por WhatsApp; aquí puedes dejar una nota"
+                        value={chosen[o]}
+                        onChange={(e) => setChosen((c) => ({ ...c, [o]: e.target.value }))}
+                      />
+                    ) : (
+                      <input
+                        className="input"
+                        type={isDateOption(o) ? "date" : "text"}
+                        placeholder={`Escribe aquí: ${o.toLowerCase()}`}
+                        value={chosen[o]}
+                        onChange={(e) => setChosen((c) => ({ ...c, [o]: e.target.value }))}
+                      />
+                    )}
+                  </label>
+                ))}
+              </div>
+            )}
+
             <textarea
               className="input mt-3 min-h-20"
-              placeholder="Cuéntanos más: nombre, colores, frase, fecha…"
+              placeholder="¿Algo más que debamos saber? Colores, frase, cantidad…"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />

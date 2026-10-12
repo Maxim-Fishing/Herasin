@@ -26,11 +26,15 @@ export default function ProductsAdmin() {
   const [edit, setEdit] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
+  const [ok, setOk] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const save = async () => {
     if (!edit || !edit.name.trim()) return setMsg("El nombre es obligatorio.");
+    if (uploading) return setMsg("Espera a que terminen de subir las fotos.");
     setSaving(true);
     setMsg("");
+    setOk("");
     try {
       const slug = edit.slug || slugify(edit.name);
       const id = edit.id || slug + "-" + Date.now().toString(36);
@@ -41,6 +45,7 @@ export default function ProductsAdmin() {
         images: edit.images.filter(Boolean),
         categoryId: edit.categoryId || categories[0]?.id || "",
       });
+      setOk(`✅ «${edit.name.trim()}» guardado`);
       setEdit(null);
     } catch (e) {
       setMsg((e as Error).message);
@@ -50,7 +55,13 @@ export default function ProductsAdmin() {
   };
 
   const remove = async (p: Product) => {
-    if (confirm(`¿Eliminar «${p.name}»? No se puede deshacer.`)) await deleteItem("products", p.id);
+    if (!confirm(`¿Eliminar «${p.name}»? No se puede deshacer.`)) return;
+    try {
+      await deleteItem("products", p.id);
+      setOk(`🗑️ «${p.name}» eliminado`);
+    } catch (e) {
+      setMsg((e as Error).message);
+    }
   };
 
   if (edit) {
@@ -65,7 +76,7 @@ export default function ProductsAdmin() {
           <Field label="Descripción">
             <textarea className="input min-h-28" value={edit.description} onChange={(e) => set({ description: e.target.value })} />
           </Field>
-          <ImagesField value={edit.images} onChange={(images) => set({ images })} />
+          <ImagesField value={edit.images} onChange={(images) => set({ images })} onBusyChange={setUploading} />
           <TagsField label="Formas de personalizar" value={edit.options} onChange={(options) => set({ options })} hint="Cada una aparece como una etiqueta en la ficha del producto." />
           <Field label="Categoría">
             <select className="input" value={edit.categoryId} onChange={(e) => set({ categoryId: e.target.value })}>
@@ -101,7 +112,9 @@ export default function ProductsAdmin() {
         </div>
         {msg && <p className="mt-4 text-sm text-red-600">{msg}</p>}
         <div className="mt-6 flex gap-3">
-          <button className="btn btn-primary" disabled={saving} onClick={save}>{saving ? "Guardando…" : "Guardar"}</button>
+          <button className="btn btn-primary" disabled={saving || uploading} onClick={save}>
+            {saving ? "Guardando…" : uploading ? "Subiendo fotos…" : "Guardar"}
+          </button>
           <button className="btn btn-ghost" onClick={() => { setEdit(null); setMsg(""); }}>Cancelar</button>
         </div>
       </Card>
@@ -112,8 +125,10 @@ export default function ProductsAdmin() {
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-display text-2xl font-bold text-lila-800">Productos ({products.length})</h2>
-        <button className="btn btn-primary" onClick={() => setEdit(blank())}>＋ Nuevo producto</button>
+        <button className="btn btn-primary" onClick={() => { setOk(""); setMsg(""); setEdit(blank()); }}>＋ Nuevo producto</button>
       </div>
+      {ok && <p className="mb-3 rounded-2xl bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">{ok}</p>}
+      {msg && products.length > 0 && <p className="mb-3 rounded-2xl bg-red-50 px-4 py-2 text-sm text-red-700">{msg}</p>}
       <div className="space-y-3">
         {products.map((p) => (
           <div key={p.id} className="flex items-center gap-4 rounded-2xl border border-lila-100 bg-white p-3">
