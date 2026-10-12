@@ -91,7 +91,7 @@ export function Steps({ steps }: { steps: Step[] }) {
 /** Video corto de resina, en formato historia con tu arte final. */
 export function ResinVideo({ className = "" }: { className?: string }) {
   return (
-    <div className={`mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/40 bg-lila-200 shadow-xl shadow-lila-200 ${className}`}>
+    <div className={`mx-auto w-full max-w-[300px] overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/40 bg-lila-200 shadow-xl shadow-lila-200 sm:max-w-[360px] md:max-w-[420px] ${className}`}>
       <video
         src={asset("/video/resina.mp4")}
         poster={asset("/video/resina-poster.jpg")}
@@ -110,14 +110,30 @@ export function ResinVideo({ className = "" }: { className?: string }) {
 export function VideoBlock() {
   return (
     <Section script="Mira la magia" title="La resina en acción">
-      <div className="grid items-center gap-10 md:grid-cols-2">
+      <div className="grid items-center gap-10 md:grid-cols-[minmax(0,420px)_1fr] md:gap-14">
         <ResinVideo />
-        <div className="space-y-4 text-center text-lila-900/80 md:text-left">
-          <p className="text-lg">
+        <div className="text-center md:text-left">
+          <p className="text-xl leading-relaxed text-lila-900/85">
             Cada pieza nace en el taller: se mezcla, se vierte, se cura y se pule a mano.
             Mira algunas de nuestras creaciones en resina.
           </p>
-          <Link href="/como-lo-hacemos" className="btn btn-primary">Ver el proceso paso a paso</Link>
+
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              ["🧪", "Mezcla y color", "Pigmentos, brillos y flores a tu gusto."],
+              ["💧", "Vertido a mano", "Pieza por pieza, sin producción en masa."],
+              ["⏳", "Curado de 24 horas", "Para lograr ese brillo cristalino."],
+              ["✨", "Pulido y empaque", "Acabados cuidados antes de entregar."],
+            ].map(([icon, title, text]) => (
+              <li key={title} className="rounded-[1.5rem] border-[3px] border-dotted border-cafe/25 bg-white p-4 text-left">
+                <span className="text-2xl">{icon}</span>
+                <p className="mt-1 font-display font-semibold text-lila-800">{title}</p>
+                <p className="text-sm text-lila-900/70">{text}</p>
+              </li>
+            ))}
+          </ul>
+
+          <Link href="/como-lo-hacemos" className="btn btn-primary mt-7">Ver el proceso paso a paso</Link>
         </div>
       </div>
     </Section>
