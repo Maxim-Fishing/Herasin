@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import SeasonPopup from "@/components/SeasonPopup";
+import IntroHero from "@/components/IntroHero";
 import ProductCard from "@/components/ProductCard";
-import Pic, { Nina } from "@/components/Pic";
+import Pic from "@/components/Pic";
 import {
   CourseBlock,
   CtaWhatsapp,
@@ -18,17 +19,9 @@ import {
   VideoBlock,
 } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
-import { whatsappLink } from "@/lib/utils";
-
-const collage = [
-  { src: "/fotos/012.jpg", cls: "translate-y-4 -rotate-2", alt: "Recordatorio de boda en resina" },
-  { src: "/fotos/030.jpg", cls: "-translate-y-2 rotate-2", alt: "Llavero de resina para 15 años" },
-  { src: "/fotos/136.jpg", cls: "translate-y-2 rotate-1", alt: "Portavasos en resina" },
-  { src: "/fotos/108.jpg", cls: "-translate-y-4 -rotate-1", alt: "Libreta con flores eternizadas" },
-];
 
 export default function Home() {
-  const { settings, seasons, categories } = useData();
+  const { seasons, categories } = useData();
   const products = useActiveProducts();
   const featured = products.filter((p) => p.featured).slice(0, 8);
   const kits = [...seasons].sort((a, b) => a.order - b.order).filter((s) => s.slug !== "fe");
@@ -37,62 +30,7 @@ export default function Home() {
     <>
       <SeasonPopup />
 
-      {/* HERO */}
-      <section className="bg-hearts relative overflow-hidden border-b-[3px] border-dotted border-cafe/30">
-        {["left-[6%] top-[14%]", "right-[8%] top-[10%]", "left-[46%] bottom-[8%]"].map((c, i) => (
-          <span
-            key={c}
-            aria-hidden
-            className={`animate-twinkle pointer-events-none absolute text-2xl text-lila-400 ${c}`}
-            style={{ animationDelay: `${i * 1.1}s` }}
-          >
-            ✦
-          </span>
-        ))}
-
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-2 md:py-20">
-          <div className="text-center md:text-left">
-            <p className="animate-fade-up font-script text-2xl text-lila-500">Hecho a mano con amor</p>
-            <h1 className="animate-fade-up mt-1 font-display text-4xl font-semibold leading-tight text-lila-800 md:text-5xl lg:text-6xl" style={{ animationDelay: "0.1s" }}>
-              {settings.heroTitle}
-            </h1>
-            <p className="animate-fade-up mt-5 text-lg text-lila-900/75" style={{ animationDelay: "0.2s" }}>
-              {settings.heroSubtitle}
-            </p>
-            <div className="animate-fade-up mt-7 flex flex-col justify-center gap-3 sm:flex-row md:justify-start" style={{ animationDelay: "0.3s" }}>
-              <Link href="/categorias" className="btn btn-primary">Ver productos</Link>
-              <a
-                href={whatsappLink(settings, "Hola HERARESIN 💜, quiero cotizar un producto personalizado.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-              >
-                💬 Cotizar por WhatsApp
-              </a>
-            </div>
-            <div className="mt-8 flex justify-center md:justify-start">
-              <Nina className="animate-float h-40 w-auto md:h-48" />
-            </div>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-md">
-            <div className="grid grid-cols-2 gap-4">
-              {collage.map((c) => (
-                <Pic
-                  key={c.src}
-                  src={c.src}
-                  alt={c.alt}
-                  eager
-                  className={`aspect-[4/5] w-full rounded-[1.75rem] border-[5px] border-white shadow-xl shadow-lila-300/60 ${c.cls}`}
-                />
-              ))}
-            </div>
-            <div className="animate-float absolute -bottom-4 -left-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-lila-700 shadow-lg md:-left-8">
-              💜 {settings.customers} clientes
-            </div>
-          </div>
-        </div>
-      </section>
+      <IntroHero />
 
       <StatsBand />
 
