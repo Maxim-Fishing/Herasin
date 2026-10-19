@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { useActiveProducts, useData } from "@/lib/store";
+import { kitItems } from "@/lib/kits";
 import Pic, { Nina } from "./Pic";
 
 const KEY = "heraresin-popup-closed";
@@ -41,7 +42,7 @@ export default function SeasonPopup() {
 
   if (!open) return null;
   const season = seasons.find((s) => s.id === p.seasonId);
-  const items = products.filter((x) => x.seasonIds.includes(p.seasonId)).slice(0, 3);
+  const items = season ? kitItems(season, products).slice(0, 3) : [];
 
   return (
     <div

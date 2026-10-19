@@ -4,20 +4,22 @@ import Loading from "@/components/Loading";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Pic, { Nina } from "@/components/Pic";
+import { Nina } from "@/components/Pic";
+import Gallery from "@/components/Gallery";
+import Notices from "@/components/Notices";
+import { kitsOf } from "@/lib/kits";
 import ProductCard from "@/components/ProductCard";
 import CardGrid from "@/components/CardGrid";
 import QuoteModal from "@/components/QuoteModal";
 import { BackLink, Section } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
-import { PRODUCT_NOTICES, formatPrice, isDateOption, quoteMessage } from "@/lib/utils";
+import { formatPrice, isDateOption, quoteMessage } from "@/lib/utils";
 
 function Ficha() {
   const slug = useSearchParams().get("s");
   const { categories, seasons, loading } = useData();
   const products = useActiveProducts();
   const product = products.find((p) => p.slug === slug);
-  const [img, setImg] = useState(0);
   // forma de personalizar elegida → dato que escribe la clienta
   const [chosen, setChosen] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
@@ -37,7 +39,7 @@ function Ficha() {
   }
 
   const category = categories.find((c) => c.id === product.categoryId);
-  const productSeasons = seasons.filter((s) => product.seasonIds.includes(s.id));
+  const productSeasons = kitsOf(product, seasons, products);
   const related = products
     .filter((p) => p.id !== product.id && p.categoryId === product.categoryId)
     .slice(0, 4);
@@ -72,27 +74,12 @@ function Ficha() {
         </div>
 
         <div className="grid gap-10 md:grid-cols-2">
-          {/* FOTO */}
-          <div>
-            <div className="relative overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/35 bg-lila-200 p-2">
-              <Pic src={product.images[img]} alt={product.name} className="aspect-square w-full rounded-[1.5rem] text-8xl" />
-              <Nina className="pointer-events-none absolute bottom-3 left-3 h-24 w-auto drop-shadow-[0_3px_6px_rgba(94,59,79,0.35)] sm:h-28" />
-            </div>
-            {product.images.length > 1 && (
-              <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-                {product.images.map((src, i) => (
-                  <button
-                    key={src + i}
-                    onClick={() => setImg(i)}
-                    aria-label={`Ver foto ${i + 1}`}
-                    className={`h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-[3px] ${i === img ? "border-lila-600" : "border-transparent"}`}
-                  >
-                    <Pic src={src} alt="" className="h-full w-full" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* FOTO (vertical 3:4, con zoom) */}
+          <Gallery
+            images={product.images}
+            alt={product.name}
+            overlay={<Nina className="pointer-events-none absolute bottom-3 left-3 h-24 w-auto drop-shadow-[0_3px_6px_rgba(94,59,79,0.35)] sm:h-28" />}
+          />
 
           {/* DATOS */}
           <div>
@@ -175,17 +162,7 @@ function Ficha() {
             </button>
 
             {/* Avisos fijos */}
-            <div className="mt-6 rounded-[1.5rem] border-[3px] border-dotted border-cafe/30 bg-lila-50 p-4">
-              <p className="font-heading font-semibold text-lila-800">Importante</p>
-              <ul className="mt-2 space-y-1.5 text-sm text-lila-900/80">
-                {PRODUCT_NOTICES.map((n) => (
-                  <li key={n} className="flex gap-2"><span className="text-lila-500">✦</span>{n}</li>
-                ))}
-              </ul>
-              <Link href="/politicas" className="mt-3 inline-block text-sm font-bold text-lila-600 hover:underline">
-                Ver todas las políticas →
-              </Link>
-            </div>
+            <Notices />
           </div>
         </div>
       </Section>

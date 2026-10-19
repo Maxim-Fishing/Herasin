@@ -19,6 +19,7 @@ import {
   VideoBlock,
 } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
+import { kitCover, kitItems } from "@/lib/kits";
 
 export default function Home() {
   const { seasons, categories } = useData();
@@ -81,7 +82,7 @@ export default function Home() {
         <Section script="Siempre en kit" title="Kits de temporada" subtitle="Cada temporada es un kit de detalles que combinan entre sí." tint>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {kits.slice(0, 8).map((s) => {
-              const n = products.filter((p) => p.seasonIds.includes(s.id)).length;
+              const n = kitItems(s, products).length;
               return (
                 <Link
                   key={s.id}
@@ -89,7 +90,7 @@ export default function Home() {
                   className="group overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-2 text-center transition hover:-translate-y-1 hover:shadow-xl hover:shadow-lila-200"
                 >
                   <div className="overflow-hidden rounded-[1.25rem]">
-                    <Pic src={s.image} alt={s.name} emoji={s.emoji} className="aspect-square w-full transition duration-500 group-hover:scale-105" />
+                    <Pic src={kitCover(s)} alt={s.name} emoji={s.emoji} className="aspect-[4/5] w-full transition duration-500 group-hover:scale-105" />
                   </div>
                   <p className="mt-3 font-heading font-semibold text-lila-800">{s.emoji} Kit {s.name}</p>
                   <p className="pb-2 text-xs font-medium text-lila-900/60">{n} piezas</p>

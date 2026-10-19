@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { CSSProperties } from "react";
 import { asset } from "@/lib/assets";
 
 export default function Pic({
@@ -7,12 +8,14 @@ export default function Pic({
   emoji = "💜",
   className = "",
   eager = false,
+  style,
 }: {
   src?: string;
   alt: string;
   emoji?: string;
   className?: string;
   eager?: boolean;
+  style?: CSSProperties;
 }) {
   if (src) {
     return (
@@ -21,6 +24,7 @@ export default function Pic({
         alt={alt}
         loading={eager ? "eager" : "lazy"}
         className={`object-cover ${className}`}
+        style={style}
       />
     );
   }

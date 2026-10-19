@@ -6,6 +6,7 @@ import type { Product } from "@/lib/types";
 import { useActiveProducts, useData } from "@/lib/store";
 import { reelCode, whatsappLink } from "@/lib/utils";
 import { asset } from "@/lib/assets";
+import { kitItems } from "@/lib/kits";
 import Pic, { NinaWhatsapp } from "./Pic";
 
 export function PageHero({
@@ -318,8 +319,9 @@ export function FaithBlock() {
   const products = useActiveProducts();
   const { seasons } = useData();
   const faith = seasons.find((s) => s.slug === "fe");
+  const faithIds = new Set(faith ? kitItems(faith, products).map((p) => p.id) : []);
   const slides: FaithSlide[] = products
-    .filter((p) => faith && p.seasonIds.includes(faith.id))
+    .filter((p) => faithIds.has(p.id))
     .flatMap((p) =>
       (p.images.length ? p.images.slice(0, 3) : [""]).map((image, i) => ({
         key: `${p.id}-${i}`,

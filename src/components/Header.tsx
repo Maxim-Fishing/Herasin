@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "./Pic";
 
 const links = [
@@ -18,6 +18,14 @@ const links = [
 export default function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Arriba el logo se ve grande; al bajar se achica para no quitar espacio.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const active = (href: string) => {
     const p = path.replace(/\/$/, "") || "/";
@@ -27,10 +35,10 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b-[3px] border-dotted border-cafe/30 bg-lila-50/90 backdrop-blur">
+    <header className="sticky top-0 z-40 bg-lila-50/90 shadow-[0_8px_24px_-16px_rgba(168,71,159,0.5)] backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
         <Link href="/" aria-label="HERARESIN, inicio">
-          <Logo className="h-14 w-auto" />
+          <Logo className={`w-auto transition-[height] duration-300 ${scrolled ? "h-12" : "h-16 md:h-20"}`} />
         </Link>
 
         <nav className="hidden gap-1 lg:flex">

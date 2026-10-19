@@ -3,9 +3,16 @@ export type Season = {
   name: string;
   slug: string;
   description: string;
+  /** Foto principal (kits antiguos); los kits nuevos usan `images`. */
   image: string;
   emoji: string;
   order: number;
+  /** Fotos del kit (la primera es la principal). */
+  images?: string[];
+  /** Valor del kit en COP. 0 = por cotizar. */
+  price?: number;
+  /** Productos que lleva el kit; si no existe se usan los que tenían esta temporada. */
+  itemIds?: string[];
 };
 
 /** Subcategoría dentro de una categoría; `group` las agrupa bajo un título (ej. «Camisetas»). */
@@ -83,6 +90,8 @@ export type SiteSettings = {
   reels: string[];
   customers: string;
   address: string;
+  /** Dirección que busca el mapa; si está vacía se usa la dirección del taller. */
+  mapQuery?: string;
   course: Course;
   testimonials: Testimonial[];
   faq: Faq[];

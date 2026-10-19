@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Pic from "@/components/Pic";
+import { kitCover, kitItems } from "@/lib/kits";
 import { PageHero, Section } from "@/components/Sections";
 import { useActiveProducts, useData } from "@/lib/store";
 
@@ -21,7 +22,7 @@ export default function Temporadas() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[...seasons].sort((a, b) => a.order - b.order).map((s) => {
-              const items = products.filter((p) => p.seasonIds.includes(s.id));
+              const items = kitItems(s, products);
               return (
                 <Link
                   key={s.id}
@@ -29,7 +30,7 @@ export default function Temporadas() {
                   className="group overflow-hidden rounded-[2rem] border-[3px] border-dotted border-cafe/30 bg-white p-2.5 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-lila-200"
                 >
                   <div className="overflow-hidden rounded-[1.5rem]">
-                    <Pic src={s.image} alt={s.name} emoji={s.emoji} className="aspect-[16/10] w-full text-6xl transition duration-500 group-hover:scale-105" />
+                    <Pic src={kitCover(s)} alt={s.name} emoji={s.emoji} className="aspect-[16/10] w-full text-6xl transition duration-500 group-hover:scale-105" />
                   </div>
                   <div className="p-4">
                     <p className="font-script text-lg text-lila-500">Kit</p>

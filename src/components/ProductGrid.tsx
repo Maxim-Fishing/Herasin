@@ -6,6 +6,7 @@ import CardGrid from "./CardGrid";
 import { Nina } from "./Pic";
 import { useData } from "@/lib/store";
 import type { Product } from "@/lib/types";
+import { kitItems } from "@/lib/kits";
 
 /** Cuadrícula con buscador y filtros por categoría y temporada. */
 export default function ProductGrid({
@@ -17,20 +18,22 @@ export default function ProductGrid({
   hideCategory?: boolean;
   hideSeason?: boolean;
 }) {
-  const { categories, seasons } = useData();
+  const { categories, seasons, products: all } = useData();
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("");
   const [season, setSeason] = useState("");
 
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();
+    const kit = seasons.find((s) => s.id === season);
+    const inKit = new Set(kit ? kitItems(kit, all).map((p) => p.id) : []);
     return products.filter(
       (p) =>
         (!term || `${p.name} ${p.description} ${p.options.join(" ")}`.toLowerCase().includes(term)) &&
         (!cat || p.categoryId === cat) &&
-        (!season || p.seasonIds.includes(season)),
+        (!season || inKit.has(p.id)),
     );
-  }, [products, q, cat, season]);
+  }, [products, q, cat, season, seasons, all]);
 
   return (
     <div>

@@ -70,9 +70,9 @@ export function SettingsAdmin() {
   const text = (k: keyof SiteSettings, label: string, area = false, hint?: string) => (
     <Field label={label} hint={hint}>
       {area ? (
-        <textarea className="input min-h-24" value={draft[k] as string} onChange={(e) => set({ [k]: e.target.value } as Partial<SiteSettings>)} />
+        <textarea className="input min-h-24" value={(draft[k] as string | undefined) ?? ""} onChange={(e) => set({ [k]: e.target.value } as Partial<SiteSettings>)} />
       ) : (
-        <input className="input" value={draft[k] as string} onChange={(e) => set({ [k]: e.target.value } as Partial<SiteSettings>)} />
+        <input className="input" value={(draft[k] as string | undefined) ?? ""} onChange={(e) => set({ [k]: e.target.value } as Partial<SiteSettings>)} />
       )}
     </Field>
   );
@@ -88,6 +88,7 @@ export function SettingsAdmin() {
           {text("email", "Correo")}
           {text("city", "Ciudad / cobertura")}
           {text("address", "Dirección del taller")}
+          {text("mapQuery", "Dirección para el mapa (opcional)", false, "Si el pin del mapa no cae justo, escribe aquí la dirección como la entiende Google Maps, por ejemplo: Calle 43B #10-18, Neiva, Huila, Colombia.")}
         </div>
       </Card>
 

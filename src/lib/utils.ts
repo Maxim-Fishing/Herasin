@@ -1,4 +1,4 @@
-import type { Product, SiteSettings } from "./types";
+import type { Product, Season, SiteSettings } from "./types";
 import { STORAGE_BUCKET, supabase } from "./supabase";
 
 export function slugify(text: string) {
@@ -78,16 +78,16 @@ export function quoteMessage(opts: {
   return lines.join("\n");
 }
 
-/** Mensaje para cotizar el kit completo de una temporada. */
-export function kitMessage(seasonName: string, products: Product[], url: string) {
-  return [
-    `Hola HERARESIN 💜, quiero cotizar el *KIT ${seasonName}*.`,
-    "",
-    "Incluye:",
-    ...products.map((p) => `• ${p.name} — ${p.description.split(". ")[0].replace(/\.$/, "")}`),
-    "",
-    `Ver kit: ${url}`,
-  ].join("\n");
+/** Mensaje para cotizar un kit: descripción, valor y las piezas que eligió la clienta. */
+export function kitQuoteMessage(opts: { season: Season; items: Product[]; notes: string; url: string }) {
+  const { season, items, notes, url } = opts;
+  const lines = ["Hola HERARESIN 💜, quiero cotizar este kit:", "", `*Kit ${season.name}*`];
+  if (season.description) lines.push(season.description);
+  lines.push("", season.price && season.price > 0 ? `Precio del kit: ${formatPrice(season.price)}` : "Precio: por cotizar");
+  lines.push("", "Quiero estas piezas:", ...(items.length ? items.map((p) => `• ${p.name}`) : ["• (lo definimos por chat)"]));
+  if (notes.trim()) lines.push("", `Detalles: ${notes.trim()}`);
+  lines.push("", `Ver kit: ${url}`);
+  return lines.join("\n");
 }
 
 /**

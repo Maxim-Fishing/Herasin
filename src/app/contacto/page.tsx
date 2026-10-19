@@ -17,6 +17,11 @@ export default function Contacto() {
     window.open(whatsappLink(settings, text), "_blank", "noopener");
   };
 
+  // Google entiende mejor «#10-18» que «n.º 10-18»; la administradora puede escribir otra dirección para el mapa.
+  const mapQ = encodeURIComponent(
+    settings.mapQuery?.trim() ||
+      [settings.address.replace(/n\.?\s?º|nº|número/gi, "#").replace(/[()]/g, ""), "Colombia"].join(", "),
+  );
   const chips = [
     { icon: "📸", label: settings.instagramHandle, href: settings.instagramUrl },
     ...(settings.email ? [{ icon: "✉️", label: settings.email, href: `mailto:${settings.email}` }] : []),
@@ -75,10 +80,30 @@ export default function Contacto() {
               );
             })}
           </ul>
-          {settings.address && (
-            <p className="px-6 pb-5 text-center text-xs text-lila-900/55">Taller: {settings.address}</p>
-          )}
         </div>
+
+        {settings.address && (
+          <div className="mt-6 overflow-hidden rounded-[2.25rem] border-[3px] border-dotted border-cafe/30 bg-white/85 shadow-xl shadow-lila-200/60">
+            <div className="flex flex-col items-center gap-3 p-5 text-center sm:flex-row sm:justify-between sm:text-left">
+              <div>
+                <p className="font-script text-lg text-lila-500">Visítanos</p>
+                <p className="font-heading text-lg font-semibold text-lila-800">Nuestro taller</p>
+                <p className="text-sm text-lila-900/70">{settings.address}</p>
+              </div>
+              <a href={`https://www.google.com/maps/search/?api=1&query=${mapQ}`} target="_blank" rel="noopener noreferrer" className="btn btn-soft !py-2 text-sm">
+                📍 Cómo llegar
+              </a>
+            </div>
+            <iframe
+              title="Mapa del taller de HERARESIN"
+              src={`https://www.google.com/maps?q=${mapQ}&hl=es&z=16&output=embed`}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-72 w-full border-0 md:h-80"
+            />
+          </div>
+        )}
       </section>
 
       <Faq />

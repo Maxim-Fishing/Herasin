@@ -125,7 +125,7 @@ export function ImagesField({
           {pending > 0 ? `Subiendo… faltan ${pending}` : "Toca para elegir fotos"}
         </span>
         <span className="text-xs text-lila-900/60">
-          Puedes elegir varias a la vez. Se suben solas y se reducen para cargar rápido.
+          Mejor verticales (3:4), como salen del celular. Puedes elegir varias a la vez; se suben solas y se reducen.
         </span>
         <input type="file" accept="image/*" multiple className="sr-only" onChange={pick} disabled={pending > 0} />
       </label>
@@ -135,7 +135,7 @@ export function ImagesField({
         <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4">
           {value.map((src, i) => (
             <li key={src + i} className="relative">
-              <Pic src={src} alt={`Foto ${i + 1}`} className="aspect-square w-full rounded-2xl border-2 border-lila-200" />
+              <Pic src={src} alt={`Foto ${i + 1}`} className="aspect-[3/4] w-full rounded-2xl border-2 border-lila-200" />
               {i === 0 ? (
                 <span className="absolute left-1.5 top-1.5 rounded-full bg-lila-600 px-2 py-0.5 text-[10px] font-bold text-white">
                   Principal

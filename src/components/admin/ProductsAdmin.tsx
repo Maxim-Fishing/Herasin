@@ -22,7 +22,7 @@ const blank = (): Product => ({
 });
 
 export default function ProductsAdmin() {
-  const { products, categories, seasons } = useData();
+  const { products, categories } = useData();
   const [edit, setEdit] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
@@ -98,24 +98,9 @@ export default function ProductsAdmin() {
               </Field>
             );
           })()}
-          <div>
-            <span className="mb-1 block text-sm font-semibold text-lila-800">Temporadas</span>
-            <div className="flex flex-wrap gap-2">
-              {seasons.map((s) => {
-                const on = edit.seasonIds.includes(s.id);
-                return (
-                  <button
-                    type="button"
-                    key={s.id}
-                    onClick={() => set({ seasonIds: on ? edit.seasonIds.filter((x) => x !== s.id) : [...edit.seasonIds, s.id] })}
-                    className={`rounded-full border-2 px-4 py-1 text-sm font-medium ${on ? "border-lila-600 bg-lila-600 text-white" : "border-lila-200 text-lila-700"}`}
-                  >
-                    {s.emoji} {s.name}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <p className="rounded-2xl bg-lila-50 px-4 py-3 text-sm text-lila-900/70">
+            🎁 Para meter este producto en un kit de temporada, ve a <strong>Kits de temporada</strong> y márcalo entre las piezas del kit.
+          </p>
           <Field label="Precio (COP)" hint="Escribe solo números, sin puntos. Déjalo en 0 si prefieres que cotizen por WhatsApp.">
             <input type="number" min={0} step={500} className="input" value={edit.price} onChange={(e) => set({ price: Math.max(0, Number(e.target.value) || 0) })} />
           </Field>
