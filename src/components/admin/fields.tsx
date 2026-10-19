@@ -40,7 +40,10 @@ export function ImageField({ value, onChange, label = "Imagen" }: { value: strin
       <div className="flex items-center gap-3">
         <Pic src={value} alt="" className="h-16 w-16 shrink-0 rounded-xl text-2xl" />
         <div className="flex-1 space-y-1">
-          <input type="file" accept="image/*" disabled={busy} onChange={pick} className="text-sm" />
+          <label className={`btn btn-soft inline-flex cursor-pointer !py-2 text-sm focus-within:ring-2 focus-within:ring-lila-500 ${busy ? "pointer-events-none opacity-60" : ""}`}>
+            📷 {busy ? "Subiendo…" : value ? "Cambiar imagen" : "Elegir imagen"}
+            <input type="file" accept="image/*" disabled={busy} onChange={pick} className="sr-only" />
+          </label>
           <input className="input" placeholder="…o pega la URL de la imagen" value={value} onChange={(e) => onChange(e.target.value)} />
         </div>
       </div>

@@ -28,6 +28,7 @@ export default function ProductsAdmin() {
   const [msg, setMsg] = useState("");
   const [ok, setOk] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [onlyPending, setOnlyPending] = useState(false);
 
   const save = async () => {
     if (!edit || !edit.name.trim()) return setMsg("El nombre es obligatorio.");
@@ -120,26 +121,85 @@ export default function ProductsAdmin() {
     );
   }
 
+  const subsOf = (p: Product) => categories.find((c) => c.id === p.categoryId)?.subcategories ?? [];
+  const needsSub = (p: Product) => subsOf(p).length > 0 && !subsOf(p).some((s) => s.id === p.subcategoryId);
+  const pendingCount = products.filter(needsSub).length;
+  const shown = onlyPending ? products.filter(needsSub) : products;
+
+  /** Asigna la subcategoría desde la misma lista, sin abrir el producto. */
+  const assignSub = async (p: Product, id: string) => {
+    setMsg("");
+    setOk("");
+    try {
+      await saveItem("products", { ...p, subcategoryId: id || undefined });
+      const s = subsOf(p).find((x) => x.id === id);
+      setOk(s ? `✅ «${p.name}» quedó en ${s.name}` : `«${p.name}» quedó sin subcategoría`);
+    } catch (e) {
+      setMsg((e as Error).message);
+    }
+  };
+
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-heading text-2xl font-bold text-lila-800">Productos ({products.length})</h2>
         <button className="btn btn-primary" onClick={() => { setOk(""); setMsg(""); setEdit(blank()); }}>＋ Nuevo producto</button>
       </div>
+      {pendingCount > 0 && (
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <button onClick={() => setOnlyPending(false)} className={`rounded-full px-4 py-1.5 text-sm font-bold ${!onlyPending ? "bg-lila-600 text-white" : "bg-lila-100 text-lila-700"}`}>
+            Todos ({products.length})
+          </button>
+          <button onClick={() => setOnlyPending(true)} className={`rounded-full px-4 py-1.5 text-sm font-bold ${onlyPending ? "bg-amber-500 text-white" : "bg-amber-100 text-amber-800"}`}>
+            ⚠ Sin subcategoría ({pendingCount})
+          </button>
+        </div>
+      )}
       {ok && <p className="mb-3 rounded-2xl bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">{ok}</p>}
       {msg && products.length > 0 && <p className="mb-3 rounded-2xl bg-red-50 px-4 py-2 text-sm text-red-700">{msg}</p>}
       <div className="space-y-3">
-        {products.map((p) => (
-          <div key={p.id} className="flex items-center gap-4 rounded-2xl border border-lila-100 bg-white p-3">
-            <Pic src={p.images[0]} alt={p.name} className="h-16 w-16 shrink-0 rounded-xl text-2xl" />
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-lila-800">{p.name} {!p.active && <span className="ml-2 rounded bg-lila-100 px-2 text-xs">oculto</span>}</p>
-              <p className="truncate text-sm text-lila-900/60">{categories.find((c) => c.id === p.categoryId)?.name ?? "Sin categoría"}</p>
+        {shown.map((p) => {
+          const cat = categories.find((c) => c.id === p.categoryId);
+          const subs = subsOf(p);
+          const sub = subs.find((s) => s.id === p.subcategoryId);
+          return (
+            <div key={p.id} className="flex flex-wrap items-center gap-3 rounded-2xl border border-lila-100 bg-white p-3 sm:flex-nowrap sm:gap-4">
+              <Pic src={p.images[0]} alt={p.name} className="aspect-[3/4] w-14 shrink-0 rounded-xl text-2xl" />
+              <div className="min-w-0 flex-1 basis-44">
+                <p className="truncate font-semibold text-lila-800">{p.name} {!p.active && <span className="ml-2 rounded bg-lila-100 px-2 text-xs">oculto</span>}</p>
+                <p className="truncate text-sm text-lila-900/60">
+                  {cat?.name ?? "Sin categoría"}
+                  {sub && (
+                    <>
+                      {" › "}
+                      <span className="font-semibold text-lila-700">{sub.group ? `${sub.group} · ${sub.name}` : sub.name}</span>
+                    </>
+                  )}
+                </p>
+                {subs.length > 0 && !sub && (
+                  <span className="mt-1 inline-block rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
+                    ⚠ Sin subcategoría: no sale en ninguna cajita
+                  </span>
+                )}
+              </div>
+              {subs.length > 0 && (
+                <select
+                  aria-label={`Subcategoría de ${p.name}`}
+                  className="input !w-full !py-1.5 text-sm sm:!w-56"
+                  value={sub?.id ?? ""}
+                  onChange={(e) => assignSub(p, e.target.value)}
+                >
+                  <option value="">Asignar subcategoría…</option>
+                  {subs.map((s) => (
+                    <option key={s.id + s.group} value={s.id}>{s.group ? `${s.group} · ${s.name}` : s.name}</option>
+                  ))}
+                </select>
+              )}
+              <button className="rounded-full px-3 py-1 text-lila-700 hover:bg-lila-100" onClick={() => setEdit(p)}>Editar</button>
+              <button className="rounded-full px-3 py-1 text-red-600 hover:bg-red-50" onClick={() => remove(p)}>Eliminar</button>
             </div>
-            <button className="rounded-full px-3 py-1 text-lila-700 hover:bg-lila-100" onClick={() => setEdit(p)}>Editar</button>
-            <button className="rounded-full px-3 py-1 text-red-600 hover:bg-red-50" onClick={() => remove(p)}>Eliminar</button>
-          </div>
-        ))}
+          );
+        })}
         {products.length === 0 && (
           <div className="rounded-2xl bg-lila-50 p-8 text-center text-lila-700">
             <p>Aún no hay productos. ¡Crea el primero o carga el catálogo inicial!</p>

@@ -54,6 +54,11 @@ export function LogoCompleto({ className = "" }: { className?: string }) {
   return <img src={asset("/marca/logo-completo.png")} alt="HERARESIN" className={className} />;
 }
 
+/** Logo redondo con la muñeca (versión liviana para el encabezado). */
+export function LogoRedondo({ className = "" }: { className?: string }) {
+  return <img src={asset("/marca/logo-redondo.png")} alt="HERARESIN" className={className} />;
+}
+
 export function Nina({ className = "" }: { className?: string }) {
   return <img src={asset("/marca/nina.png")} alt="" aria-hidden className={className} />;
 }

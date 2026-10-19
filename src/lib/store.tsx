@@ -62,6 +62,15 @@ function withDefaultSubs(c: Category): Category {
   return def ? { ...c, subcategories: def.subcategories, note: c.note ?? def.note } : { ...c, subcategories: [] };
 }
 
+/**
+ * «Línea de fe» es una categoría nueva: si todavía no está en la base de datos se agrega aquí
+ * (con su id fijo) para que ya se vea y se pueda asignar; al guardarla queda en Supabase.
+ */
+function withFaithLine(cats: Category[]): Category[] {
+  const fe = demoCategories.find((d) => d.slug === "linea-de-fe");
+  return fe && !cats.some((c) => c.slug === fe.slug) ? [...cats, fe] : cats;
+}
+
 type Row<T> = { id: string; data: Omit<T, "id"> };
 const unpack = <T,>(rows: Row<T>[] | null): T[] =>
   (rows ?? []).map((r) => ({ ...r.data, id: r.id }) as T);
@@ -80,7 +89,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setData({
       products: unpack<Product>(p.data as Row<Product>[] | null),
       seasons: unpack<Season>(s.data as Row<Season>[] | null),
-      categories: unpack<Category>(c.data as Row<Category>[] | null).map(withDefaultSubs),
+      categories: withFaithLine(unpack<Category>(c.data as Row<Category>[] | null).map(withDefaultSubs)),
       settings: mergeSettings(st.data?.data as Partial<SiteSettings> | undefined),
       loading: false,
       demo: false,

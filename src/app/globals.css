@@ -151,3 +151,16 @@ h1.font-display, h2.font-display {
   text-shadow: 0 0 2px #fff, 0 3px 12px rgb(255 255 255 / 0.9);
   letter-spacing: 0.01em;
 }
+
+/* Cinta de la línea de fe: se mueve sola y se detiene al pasar el mouse. */
+@keyframes faith-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.faith-marquee__track { animation: faith-marquee 40s linear infinite; }
+.faith-marquee:hover .faith-marquee__track,
+.faith-marquee:focus-within .faith-marquee__track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .faith-marquee { overflow-x: auto; -webkit-mask-image: none !important; mask-image: none !important; }
+  .faith-marquee__track { animation: none; }
+}

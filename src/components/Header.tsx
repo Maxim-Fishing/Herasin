@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Logo } from "./Pic";
+import { LogoRedondo } from "./Pic";
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -38,7 +38,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 bg-lila-50/90 shadow-[0_8px_24px_-16px_rgba(168,71,159,0.5)] backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
         <Link href="/" aria-label="HERARESIN, inicio">
-          <Logo className={`w-auto transition-[height] duration-300 ${scrolled ? "h-12" : "h-16 md:h-20"}`} />
+          <LogoRedondo className={`w-auto transition-[height] duration-300 ${scrolled ? "h-14" : "h-20 md:h-28"}`} />
         </Link>
 
         <nav className="hidden gap-1 lg:flex">

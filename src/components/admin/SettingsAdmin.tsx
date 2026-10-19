@@ -105,6 +105,15 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
+        <h2 className="mb-1 font-heading text-2xl font-bold text-lila-800">Línea de fe · «Caminando con Jesús»</h2>
+        <p className="mb-4 text-sm text-lila-900/60">
+          Aquí va la imagen de la muñeca con la cruz que se ve junto al título de la sección de fe en el inicio. Mejor un PNG sin fondo, vertical.
+          Mientras no subas ninguna, se muestra la muñeca de siempre.
+        </p>
+        <ImageField label="Imagen de la muñeca con la cruz" value={draft.faithImage ?? ""} onChange={(faithImage) => set({ faithImage })} />
+      </Card>
+
+      <Card>
         <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Galería «Nuestro trabajo»</h2>
         <ImagesField value={draft.gallery} onChange={(gallery) => set({ gallery })} />
       </Card>

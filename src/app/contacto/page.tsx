@@ -84,7 +84,7 @@ export default function Contacto() {
 
         {settings.address && (
           <div className="mt-6 overflow-hidden rounded-[2.25rem] border-[3px] border-dotted border-cafe/30 bg-white/85 shadow-xl shadow-lila-200/60">
-            <div className="flex flex-col items-center gap-3 p-5 text-center sm:flex-row sm:justify-between sm:text-left">
+            <div className="flex flex-col items-center gap-3 p-5 text-center">
               <div>
                 <p className="font-script text-lg text-lila-500">Visítanos</p>
                 <p className="font-heading text-lg font-semibold text-lila-800">Nuestro taller</p>

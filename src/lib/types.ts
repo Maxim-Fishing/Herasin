@@ -90,6 +90,8 @@ export type SiteSettings = {
   reels: string[];
   customers: string;
   address: string;
+  /** Imagen de la muñeca con la cruz para la sección «Caminando con Jesús». */
+  faithImage?: string;
   /** Dirección que busca el mapa; si está vacía se usa la dirección del taller. */
   mapQuery?: string;
   course: Course;

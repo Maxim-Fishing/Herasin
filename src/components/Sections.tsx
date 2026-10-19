@@ -7,6 +7,7 @@ import { useActiveProducts, useData } from "@/lib/store";
 import { reelCode, whatsappLink } from "@/lib/utils";
 import { asset } from "@/lib/assets";
 import { kitItems } from "@/lib/kits";
+import { FaithIntro, FaithMarquee } from "./FaithLine";
 import Pic, { NinaWhatsapp } from "./Pic";
 
 export function PageHero({
@@ -158,7 +159,7 @@ const faithPhrases = [
  * (como una ventana de capilla). Avanza sola, se desliza con el dedo y
  * también se maneja con flechas y puntos.
  */
-function FaithCarousel({ slides, slug }: { slides: FaithSlide[]; slug?: string }) {
+function FaithCarousel({ slides }: { slides: FaithSlide[] }) {
   const track = useRef<HTMLDivElement>(null);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
@@ -205,27 +206,14 @@ function FaithCarousel({ slides, slug }: { slides: FaithSlide[]; slug?: string }
   };
 
   return (
-    <section
-      className="bg-hearts relative overflow-hidden border-t-[3px] border-dotted border-cafe/20 py-16"
+    <div
+      className="relative mt-12"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={() => setPaused(true)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      {/* resplandor suave detrás de las tarjetas */}
-      <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-[26rem] w-[44rem] max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/60 blur-3xl" />
-
-      <div className="relative mx-auto max-w-6xl px-4">
-        <div className="mb-8 text-center">
-          <p className="font-script text-2xl text-lila-600">Con fe y esperanza</p>
-          <h2 className="font-display text-3xl font-semibold text-lila-800 md:text-4xl">✝️ Caminando con Jesús</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-lila-900/75">
-            Una línea con propósito: frases y reflexiones para ti o para alguien especial que lo necesite.
-          </p>
-        </div>
-      </div>
-
       <div className="relative">
         <div
           ref={track}
@@ -305,21 +293,20 @@ function FaithCarousel({ slides, slug }: { slides: FaithSlide[]; slug?: string }
         </div>
       )}
 
-      {slug && (
-        <p className="relative mt-8 text-center">
-          <Link href={`/temporada?s=${slug}`} className="btn btn-ghost">Ver toda la línea de fe</Link>
-        </p>
-      )}
-    </section>
+    </div>
   );
 }
 
 /** Bucket de fe: línea «Caminando con Jesús». */
 export function FaithBlock() {
   const products = useActiveProducts();
-  const { seasons } = useData();
+  const { seasons, categories } = useData();
   const faith = seasons.find((s) => s.slug === "fe");
-  const faithIds = new Set(faith ? kitItems(faith, products).map((p) => p.id) : []);
+  const cat = categories.find((c) => c.slug === "linea-de-fe");
+  const faithIds = new Set([
+    ...(faith ? kitItems(faith, products).map((p) => p.id) : []),
+    ...(cat ? products.filter((p) => p.categoryId === cat.id).map((p) => p.id) : []),
+  ]);
   const slides: FaithSlide[] = products
     .filter((p) => faithIds.has(p.id))
     .flatMap((p) =>
@@ -330,8 +317,16 @@ export function FaithBlock() {
       })),
     )
     .slice(0, 8);
-  if (!slides.length) return null;
-  return <FaithCarousel slides={slides} slug={faith?.slug} />;
+  if (!cat && !slides.length) return null;
+  return (
+    <section className="bg-hearts relative overflow-hidden border-t-[3px] border-dotted border-cafe/20 py-16">
+      {/* resplandor suave detrás de todo */}
+      <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/3 h-[30rem] w-[52rem] max-w-full -translate-x-1/2 rounded-full bg-white/60 blur-3xl" />
+      <FaithIntro href={cat ? `/categoria?s=${cat.slug}` : faith ? `/temporada?s=${faith.slug}` : "/categorias"} />
+      {cat && <FaithMarquee category={cat} products={products} />}
+      {slides.length > 0 && <FaithCarousel slides={slides} />}
+    </section>
+  );
 }
 
 export function Testimonials() {
