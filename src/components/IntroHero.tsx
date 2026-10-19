@@ -17,7 +17,10 @@ export default function IntroHero() {
 
   // Respeta a quien pidió menos movimiento: deja solo la imagen de portada.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) ref.current?.pause();
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) v.pause();
+    else v.play().catch(() => {});
   }, []);
 
   const toggleSound = () => {

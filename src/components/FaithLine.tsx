@@ -1,46 +1,75 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import Pic, { Nina } from "./Pic";
 import { asset } from "@/lib/assets";
 import { useData } from "@/lib/store";
 import type { Category, Product } from "@/lib/types";
 
-/**
- * Espacio de la muñeca con la cruz. La imagen se elige en el panel
- * (Ajustes → Línea de fe); mientras no haya, queda la muñeca de siempre.
- */
-function FaithDoll() {
-  const { settings } = useData();
-  const custom = settings.faithImage?.trim();
+/** Video de bienvenida de la línea de fe, dentro de una ventana en arco (como una capilla). */
+function FaithVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  // Respeta a quien pidió menos movimiento: queda solo la imagen de portada.
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) v.pause();
+    else v.play().catch(() => {});
+  }, []);
+
+  const toggleSound = () => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+    if (!v.muted) void v.play();
+  };
+
   return (
-    <div className="relative mx-auto flex h-72 w-64 items-end justify-center md:h-[26rem] md:w-80">
-      {/* ventana en arco, como una capilla */}
-      <div
-        aria-hidden
-        className="absolute inset-x-3 bottom-0 top-8 rounded-t-[999px] rounded-b-[2rem] border-[3px] border-dotted border-cafe/35 bg-gradient-to-b from-white/90 via-lila-100 to-lila-200 shadow-xl shadow-lila-200/70"
-      />
-      <span aria-hidden className="animate-twinkle absolute left-2 top-6 text-xl text-lila-400">✦</span>
-      <span aria-hidden className="animate-twinkle absolute right-3 top-16 text-lg text-lila-300" style={{ animationDelay: "1.2s" }}>✦</span>
-      {custom ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={asset(custom)}
-          alt="La muñeca de HERARESIN con una cruz"
-          className="animate-float relative z-10 h-[92%] w-auto object-contain drop-shadow-[0_8px_10px_rgba(94,59,79,0.25)]"
+    <div className="relative mx-auto w-64 md:w-80">
+      <span aria-hidden className="animate-twinkle absolute -left-2 top-6 z-10 text-xl text-lila-400">✦</span>
+      <span aria-hidden className="animate-twinkle absolute -right-1 top-20 z-10 text-lg text-lila-300" style={{ animationDelay: "1.2s" }}>✦</span>
+      <div className="relative aspect-[3/4] overflow-hidden rounded-b-[2rem] rounded-t-[999px] border-[3px] border-dotted border-cafe/40 bg-lila-200 shadow-xl shadow-lila-200/70">
+        <video
+          ref={ref}
+          src={asset("/video/fe.mp4")}
+          poster={asset("/video/fe-poster.jpg")}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="h-full w-full object-cover"
+          aria-label="La muñeca de HERARESIN saluda con una Biblia"
         />
-      ) : (
-        <Nina className="animate-float relative z-10 h-[82%] w-auto drop-shadow-[0_8px_10px_rgba(94,59,79,0.25)]" />
-      )}
+        <button
+          type="button"
+          onClick={toggleSound}
+          aria-label={muted ? "Activar sonido" : "Silenciar"}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-lila-700 shadow hover:bg-white"
+        >
+          {muted ? "🔇 Activar sonido" : "🔊 Sonido"}
+        </button>
+      </div>
     </div>
   );
 }
 
-/** Título llamativo de la línea de fe. */
+/** Título llamativo de la línea de fe, con el video y, si se sube, la muñeca con la cruz. */
 export function FaithIntro({ href }: { href: string }) {
+  const { settings } = useData();
+  // Imagen de la muñeca con la cruz: se sube en el panel (Ajustes → Línea de fe).
+  const cross = settings.faithImage?.trim();
   return (
-    <div className="relative mx-auto grid max-w-6xl items-center gap-6 px-4 md:grid-cols-[auto_1fr] md:gap-12">
-      <FaithDoll />
+    <div
+      className={`relative mx-auto grid max-w-6xl items-center gap-8 px-4 md:gap-10 ${
+        cross ? "md:grid-cols-[auto_1fr_auto]" : "md:grid-cols-[auto_1fr]"
+      }`}
+    >
+      <FaithVideo />
       <div className="text-center md:text-left">
         <p className="font-script text-2xl text-lila-600">La línea de fe</p>
         <h2 className="mt-1 font-display text-5xl leading-[1.05] text-lila-800 md:text-7xl">
@@ -57,6 +86,14 @@ export function FaithIntro({ href }: { href: string }) {
           <Link href={href} className="btn btn-primary">✝️ Ver la línea de fe</Link>
         </div>
       </div>
+      {cross && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={asset(cross)}
+          alt="La muñeca de HERARESIN con una cruz"
+          className="animate-float mx-auto h-72 w-auto object-contain drop-shadow-[0_8px_10px_rgba(94,59,79,0.25)] md:h-[26rem]"
+        />
+      )}
     </div>
   );
 }
