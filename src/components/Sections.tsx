@@ -8,6 +8,7 @@ import { reelCode, whatsappLink } from "@/lib/utils";
 import { asset } from "@/lib/assets";
 import { kitItems } from "@/lib/kits";
 import { FaithIntro, FaithMarquee } from "./FaithLine";
+import FaithBackdrop from "./FaithBackdrop";
 import Pic, { NinaWhatsapp } from "./Pic";
 
 export function PageHero({
@@ -320,6 +321,7 @@ export function FaithBlock() {
   if (!cat && !slides.length) return null;
   return (
     <section className="bg-hearts relative overflow-hidden border-t-[3px] border-dotted border-cafe/20 py-16">
+      <FaithBackdrop />
       {/* resplandor suave detrás de todo */}
       <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/3 h-[30rem] w-[52rem] max-w-full -translate-x-1/2 rounded-full bg-white/60 blur-3xl" />
       <FaithIntro href={cat ? `/categoria?s=${cat.slug}` : faith ? `/temporada?s=${faith.slug}` : "/categorias"} />

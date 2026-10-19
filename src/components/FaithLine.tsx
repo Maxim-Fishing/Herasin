@@ -32,7 +32,7 @@ function FaithVideo() {
     <div className="relative mx-auto w-64 md:w-80">
       <span aria-hidden className="animate-twinkle absolute -left-2 top-6 z-10 text-xl text-lila-400">✦</span>
       <span aria-hidden className="animate-twinkle absolute -right-1 top-20 z-10 text-lg text-lila-300" style={{ animationDelay: "1.2s" }}>✦</span>
-      <div className="relative aspect-[3/4] overflow-hidden rounded-b-[2rem] rounded-t-[999px] border-[3px] border-dotted border-cafe/40 bg-lila-200 shadow-xl shadow-lila-200/70">
+      <div className="relative aspect-[3/4] overflow-hidden rounded-b-[2rem] rounded-t-[999px] border-[3px] border-dotted border-cafe/40 bg-[#ffe1fc] shadow-xl shadow-lila-200/70">
         <video
           ref={ref}
           src={asset("/video/fe.mp4")}
