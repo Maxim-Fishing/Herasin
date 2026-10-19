@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Pic from "./Pic";
+import Pic, { Nina } from "./Pic";
 import type { Category, Product, Subcategory } from "@/lib/types";
 
 /** Agrupa conservando el orden de aparición: primero las sueltas, luego cada grupo. */
@@ -43,7 +43,7 @@ function Box({
           <Pic src={cover} alt={sub.name} className="aspect-[4/3] w-full transition duration-500 group-hover:scale-105" />
         ) : (
           <div className="bg-hearts-soft flex aspect-[4/3] w-full flex-col items-center justify-center gap-1">
-            <span aria-hidden className="text-3xl opacity-80">{category.emoji}</span>
+            <Nina className="h-[4.5rem] w-auto opacity-90" />
             <span aria-hidden className="animate-twinkle text-sm text-lila-400">✦ ✦</span>
           </div>
         )}
@@ -55,7 +55,7 @@ function Box({
           {mine.length ? mine.length : "Pronto"}
         </span>
       </div>
-      <p className="px-2 pb-2 pt-2.5 text-center font-display text-sm font-semibold leading-snug text-lila-800 sm:text-base">
+      <p className="px-2 pb-2 pt-2.5 text-center font-heading text-sm font-semibold leading-snug text-lila-800 sm:text-base">
         {sub.name}
       </p>
     </Link>

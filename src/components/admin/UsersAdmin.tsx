@@ -39,7 +39,7 @@ export default function UsersAdmin({ currentEmail }: { currentEmail: string }) {
 
   return (
     <Card>
-      <h2 className="mb-1 font-display text-2xl font-semibold text-lila-800">Usuarios con acceso</h2>
+      <h2 className="mb-1 font-heading text-2xl font-semibold text-lila-800">Usuarios con acceso</h2>
       <p className="mb-5 text-sm text-lila-900/60">
         Solo estos correos pueden crear y editar productos, kits y categorías. Cada persona debe crear su cuenta en
         Supabase (Google o correo) y luego agregarla aquí.

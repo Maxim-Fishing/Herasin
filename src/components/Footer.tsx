@@ -3,25 +3,22 @@
 import Link from "next/link";
 import { useData } from "@/lib/store";
 import { whatsappLink } from "@/lib/utils";
-import { Logo, Nina } from "./Pic";
+import { LogoCompleto } from "./Pic";
 
 export default function Footer() {
   const { settings } = useData();
   return (
     <footer className="bg-hearts mt-20 border-t-[3px] border-dotted border-cafe/40 text-lila-900">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.2fr_1fr_1fr]">
-        <div className="flex items-end gap-4">
-          <Nina className="h-36 w-auto shrink-0" />
-          <div>
-            <Logo className="h-16 w-auto" />
-            <p className="mt-2 text-sm text-lila-900/80">
-              Detalles personalizados hechos a mano en resina, con sublimación y papelería creativa. Neiva, Huila.
-            </p>
-          </div>
+        <div className="flex items-center gap-4">
+          <LogoCompleto className="h-40 w-auto shrink-0" />
+          <p className="text-sm text-lila-900/80">
+            Detalles personalizados hechos a mano en resina, con sublimación y papelería creativa. Neiva, Huila.
+          </p>
         </div>
 
         <div>
-          <p className="mb-3 font-display text-lg font-semibold text-lila-800">Explora</p>
+          <p className="mb-3 font-heading text-lg font-semibold text-lila-800">Explora</p>
           <ul className="space-y-2 text-sm font-medium">
             <li><Link href="/quienes-somos" className="hover:text-lila-700">Quiénes somos</Link></li>
             <li><Link href="/como-lo-hacemos" className="hover:text-lila-700">¿Cómo lo hacemos?</Link></li>
@@ -33,7 +30,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <p className="mb-3 font-display text-lg font-semibold text-lila-800">Contacto</p>
+          <p className="mb-3 font-heading text-lg font-semibold text-lila-800">Contacto</p>
           <ul className="space-y-2 text-sm font-medium">
             <li>
               <a href={whatsappLink(settings, "Hola HERARESIN 💜")} target="_blank" rel="noopener noreferrer" className="hover:text-lila-700">

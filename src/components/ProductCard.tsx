@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <Nina className="pointer-events-none absolute bottom-1.5 left-1.5 h-14 w-auto drop-shadow-[0_2px_4px_rgba(94,59,79,0.35)]" />
       </div>
       <div className="p-3">
-        <h3 className="font-display text-base font-semibold text-lila-900">{product.name}</h3>
+        <h3 className="font-heading text-base font-semibold text-lila-900">{product.name}</h3>
         <p className="mt-1 line-clamp-2 text-sm text-lila-900/70">{product.description}</p>
         <p className="mt-3 text-sm font-bold text-lila-600">
           {product.price > 0 ? formatPrice(product.price) : "Cotiza por WhatsApp"} →

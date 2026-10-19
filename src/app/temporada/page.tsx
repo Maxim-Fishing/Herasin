@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
@@ -18,7 +19,7 @@ function Kit() {
   if (!season) {
     return (
       <Section>
-        <p className="text-center text-lila-700">{loading ? "Cargando…" : "No encontramos este kit."}</p>
+        {loading ? <Loading /> : <p className="text-center text-lila-700">No encontramos este kit.</p>}
         <p className="mt-4 text-center"><BackLink href="/temporadas">Ver todos los kits</BackLink></p>
       </Section>
     );
@@ -73,7 +74,7 @@ function Kit() {
 
 export default function TemporadaPage() {
   return (
-    <Suspense fallback={<p className="py-20 text-center text-lila-700">Cargando…</p>}>
+    <Suspense fallback={<Loading />}>
       <Kit />
     </Suspense>
   );

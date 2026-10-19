@@ -57,7 +57,7 @@ export default function Home() {
           ].map(([src, label]) => (
             <figure key={label} className="overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-1.5 text-center">
               <Pic src={src} alt={label} className="aspect-square w-full rounded-[1.25rem]" />
-              <figcaption className="px-1 pb-2 pt-2 font-display text-sm font-semibold text-lila-800 sm:text-base">{label}</figcaption>
+              <figcaption className="px-1 pb-2 pt-2 font-heading text-sm font-semibold text-lila-800 sm:text-base">{label}</figcaption>
             </figure>
           ))}
         </div>
@@ -91,7 +91,7 @@ export default function Home() {
                   <div className="overflow-hidden rounded-[1.25rem]">
                     <Pic src={s.image} alt={s.name} emoji={s.emoji} className="aspect-square w-full transition duration-500 group-hover:scale-105" />
                   </div>
-                  <p className="mt-3 font-display font-semibold text-lila-800">{s.emoji} Kit {s.name}</p>
+                  <p className="mt-3 font-heading font-semibold text-lila-800">{s.emoji} Kit {s.name}</p>
                   <p className="pb-2 text-xs font-medium text-lila-900/60">{n} piezas</p>
                 </Link>
               );

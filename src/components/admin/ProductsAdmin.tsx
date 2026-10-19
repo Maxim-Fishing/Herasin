@@ -68,7 +68,7 @@ export default function ProductsAdmin() {
     const set = (patch: Partial<Product>) => setEdit({ ...edit, ...patch });
     return (
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">{edit.id ? "Editar producto" : "Nuevo producto"}</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">{edit.id ? "Editar producto" : "Nuevo producto"}</h2>
         <div className="space-y-5">
           <Field label="Nombre">
             <input className="input" value={edit.name} onChange={(e) => set({ name: e.target.value })} />
@@ -138,7 +138,7 @@ export default function ProductsAdmin() {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-display text-2xl font-bold text-lila-800">Productos ({products.length})</h2>
+        <h2 className="font-heading text-2xl font-bold text-lila-800">Productos ({products.length})</h2>
         <button className="btn btn-primary" onClick={() => { setOk(""); setMsg(""); setEdit(blank()); }}>＋ Nuevo producto</button>
       </div>
       {ok && <p className="mb-3 rounded-2xl bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">{ok}</p>}

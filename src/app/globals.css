@@ -28,8 +28,9 @@
   --color-lila-800: #7d3f7b;
   --color-lila-900: #5e3b4f;
   --font-sans: var(--font-quicksand);
-  --font-display: var(--font-fredoka);
-  --font-script: var(--font-pacifico);
+  --font-display: var(--font-kaushan);
+  --font-script: var(--font-chelsea);
+  --font-heading: var(--font-fredoka);
 }
 
 html { scroll-behavior: smooth; }
@@ -141,3 +142,12 @@ body {
   outline: none;
 }
 .input:focus { border-color: var(--color-lila-500); box-shadow: 0 0 0 3px var(--color-lila-100); }
+
+/* Tipografía del logo: Kaushan Script no tiene negrita; evitamos la falsa. */
+.font-display, .font-script { font-weight: 400 !important; font-synthesis: none; }
+.font-display { line-height: 1.15; }
+/* Títulos grandes con un halo blanco suave, como el borde «sticker» del logo. */
+h1.font-display, h2.font-display {
+  text-shadow: 0 0 2px #fff, 0 3px 12px rgb(255 255 255 / 0.9);
+  letter-spacing: 0.01em;
+}

@@ -45,6 +45,11 @@ export function NinaWhatsapp({ className = "" }: { className?: string }) {
   return <img src={asset("/marca/nina-whatsapp.png")} alt="" aria-hidden className={className} />;
 }
 
+/** Logo completo: círculo rosa con la muñeca y el nombre. */
+export function LogoCompleto({ className = "" }: { className?: string }) {
+  return <img src={asset("/marca/logo-completo.png")} alt="HERARESIN" className={className} />;
+}
+
 export function Nina({ className = "" }: { className?: string }) {
   return <img src={asset("/marca/nina.png")} alt="" aria-hidden className={className} />;
 }

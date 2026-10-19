@@ -82,7 +82,7 @@ export function Steps({ steps }: { steps: Step[] }) {
             Paso {s.n}
           </span>
           <div className="mb-2 mt-2 text-4xl">{s.icon}</div>
-          <h3 className="font-display text-lg font-semibold text-lila-800">{s.title}</h3>
+          <h3 className="font-heading text-lg font-semibold text-lila-800">{s.title}</h3>
           <p className="mt-1 text-sm text-lila-900/70">{s.text}</p>
         </li>
       ))}
@@ -129,7 +129,7 @@ export function VideoBlock() {
             ].map(([icon, title, text]) => (
               <li key={title} className="flex flex-col justify-center rounded-[1.5rem] border-[3px] border-dotted border-cafe/25 bg-white p-5 text-left">
                 <span className="text-4xl">{icon}</span>
-                <p className="mt-2 font-display text-lg font-semibold text-lila-800">{title}</p>
+                <p className="mt-2 font-heading text-lg font-semibold text-lila-800">{title}</p>
                 <p className="text-sm text-lila-900/70">{text}</p>
               </li>
             ))}
@@ -357,7 +357,7 @@ export function Faq() {
       <div className="mx-auto max-w-3xl space-y-3">
         {settings.faq.map((f, i) => (
           <details key={i} className="group rounded-3xl border-2 border-lila-200 bg-white p-5 open:bg-lila-50">
-            <summary className="cursor-pointer list-none font-display font-semibold text-lila-800 marker:hidden">
+            <summary className="cursor-pointer list-none font-heading font-semibold text-lila-800 marker:hidden">
               <span className="mr-2 text-lila-500 group-open:hidden">＋</span>
               <span className="mr-2 hidden text-lila-500 group-open:inline">－</span>
               {f.q}
@@ -376,7 +376,7 @@ export function InstagramBlock() {
     <Section title="Síguenos en Instagram" subtitle="Mira nuestros trabajos recientes, procesos y novedades.">
       <div className="mx-auto max-w-xl rounded-[2rem] border-[3px] border-dotted border-cafe/30 bg-lila-100 p-8 text-center">
         <div className="text-5xl">📸</div>
-        <p className="mt-3 font-display text-2xl font-semibold text-lila-800">{settings.instagramHandle}</p>
+        <p className="mt-3 font-heading text-2xl font-semibold text-lila-800">{settings.instagramHandle}</p>
         <p className="mt-1 text-lila-900/70">Pedidos reales, detrás de cámaras y novedades de cada temporada.</p>
         <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5">
           Ir a Instagram →

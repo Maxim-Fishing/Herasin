@@ -34,7 +34,7 @@ export function PopupAdmin() {
 
   return (
     <Card>
-      <h2 className="mb-1 font-display text-2xl font-bold text-lila-800">Aviso de temporada</h2>
+      <h2 className="mb-1 font-heading text-2xl font-bold text-lila-800">Aviso de temporada</h2>
       <p className="mb-5 text-sm text-lila-900/60">Ventana que ven los visitantes al entrar al inicio. Pueden cerrarla con la ✕.</p>
       <div className="space-y-4">
         <label className="flex items-center gap-3 rounded-2xl bg-lila-50 p-4 font-semibold text-lila-800">
@@ -80,7 +80,7 @@ export function SettingsAdmin() {
   return (
     <div className="space-y-6">
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Contacto</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Contacto</h2>
         <div className="space-y-4">
           {text("whatsapp", "WhatsApp (con indicativo, solo números)", false, "Ej: 573001234567")}
           {text("instagramUrl", "Enlace de Instagram")}
@@ -92,7 +92,7 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Textos del sitio</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Textos del sitio</h2>
         <div className="space-y-4">
           {text("heroTitle", "Título principal del inicio")}
           {text("heroSubtitle", "Subtítulo del inicio", true)}
@@ -104,12 +104,12 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Galería «Nuestro trabajo»</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Galería «Nuestro trabajo»</h2>
         <ImagesField value={draft.gallery} onChange={(gallery) => set({ gallery })} />
       </Card>
 
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Reels de Instagram</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Reels de Instagram</h2>
         <TagsField
           label="Reels a mostrar"
           value={draft.reels}
@@ -119,7 +119,7 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Cursos</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Cursos</h2>
         <div className="space-y-4">
           <label className="flex items-center gap-3 rounded-2xl bg-lila-50 p-4 font-semibold text-lila-800">
             <input type="checkbox" className="h-5 w-5" checked={draft.course.enabled} onChange={(e) => setCourse({ enabled: e.target.checked })} />
@@ -134,7 +134,7 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Testimonios</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Testimonios</h2>
         <div className="space-y-3">
           {draft.testimonials.map((t, i) => (
             <div key={i} className="space-y-2 rounded-2xl bg-lila-50 p-3">
@@ -148,7 +148,7 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
-        <h2 className="mb-1 font-display text-2xl font-bold text-lila-800">Políticas</h2>
+        <h2 className="mb-1 font-heading text-2xl font-bold text-lila-800">Políticas</h2>
         <p className="mb-4 text-sm text-lila-900/60">Cada línea del texto se muestra como un punto. Una línea que termina en «:» se muestra como subtítulo.</p>
         <div className="space-y-3">
           {draft.policies.map((p, i) => (
@@ -166,7 +166,7 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Preguntas frecuentes</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">Preguntas frecuentes</h2>
         <div className="space-y-3">
           {draft.faq.map((f, i) => (
             <div key={i} className="space-y-2 rounded-2xl bg-lila-50 p-3">

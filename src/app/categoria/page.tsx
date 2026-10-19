@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -19,7 +20,7 @@ function Detalle() {
   if (!category) {
     return (
       <Section>
-        <p className="text-center text-lila-700">{loading ? "Cargando…" : "No encontramos esta categoría."}</p>
+        {loading ? <Loading /> : <p className="text-center text-lila-700">No encontramos esta categoría.</p>}
         <p className="mt-4 text-center"><BackLink href="/categorias">Volver a categorías</BackLink></p>
       </Section>
     );
@@ -72,7 +73,7 @@ function Detalle() {
 
 export default function CategoriaPage() {
   return (
-    <Suspense fallback={<p className="py-20 text-center text-lila-700">Cargando…</p>}>
+    <Suspense fallback={<Loading />}>
       <Detalle />
     </Suspense>
   );

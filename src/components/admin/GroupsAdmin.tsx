@@ -67,7 +67,7 @@ export default function GroupsAdmin({ kind }: { kind: "seasons" | "categories" }
     const set = (p: Partial<Item>) => setEdit({ ...edit, ...p });
     return (
       <Card>
-        <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">{edit.id ? "Editar" : "Nueva"} {noun}</h2>
+        <h2 className="mb-4 font-heading text-2xl font-bold text-lila-800">{edit.id ? "Editar" : "Nueva"} {noun}</h2>
         <div className="space-y-4">
           <Field label="Nombre"><input className="input" value={edit.name} onChange={(e) => set({ name: e.target.value })} /></Field>
           <Field label="Descripción corta"><input className="input" value={edit.description} onChange={(e) => set({ description: e.target.value })} /></Field>
@@ -124,7 +124,7 @@ export default function GroupsAdmin({ kind }: { kind: "seasons" | "categories" }
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-display text-2xl font-bold capitalize text-lila-800">{kind === "seasons" ? "Temporadas" : "Categorías"} ({items.length})</h2>
+        <h2 className="font-heading text-2xl font-bold capitalize text-lila-800">{kind === "seasons" ? "Temporadas" : "Categorías"} ({items.length})</h2>
         <button className="btn btn-primary" onClick={() => setEdit({ id: "", name: "", slug: "", description: "", image: "", emoji: "💜", order: items.length + 1 })}>＋ Nueva {noun}</button>
       </div>
       {kind === "categories" && (

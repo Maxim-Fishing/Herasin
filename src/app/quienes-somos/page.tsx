@@ -99,7 +99,7 @@ export default function QuienesSomos() {
           ].map(([icon, t, d]) => (
             <div key={t} className="rounded-[1.75rem] border-[3px] border-dotted border-cafe/25 bg-white p-6 text-center">
               <div className="text-4xl">{icon}</div>
-              <h3 className="mt-2 font-display font-semibold text-lila-800">{t}</h3>
+              <h3 className="mt-2 font-heading font-semibold text-lila-800">{t}</h3>
               <p className="mt-1 text-sm text-lila-900/70">{d}</p>
             </div>
           ))}

@@ -74,7 +74,7 @@ export default function ComoLoHacemos() {
           ].map(([n, t]) => (
             <div key={n} className="rounded-[1.75rem] border-[3px] border-dotted border-cafe/25 bg-lila-50 p-6 text-center">
               <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-lila-500 font-bold text-white">{n}</div>
-              <p className="mt-3 font-display font-semibold text-lila-800">{t}</p>
+              <p className="mt-3 font-heading font-semibold text-lila-800">{t}</p>
             </div>
           ))}
         </div>

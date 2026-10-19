@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase, supabaseEnabled } from "@/lib/supabase";
@@ -43,7 +44,7 @@ function Login() {
     <div className="mx-auto max-w-md px-4 py-16">
       <div className="bg-hearts rounded-[2rem] border-[3px] border-dotted border-cafe/40 p-8">
         <div className="flex justify-center"><Logo className="h-20 w-auto" /></div>
-        <h1 className="mt-2 text-center font-display text-2xl font-semibold text-lila-800">Administración</h1>
+        <h1 className="mt-2 text-center font-heading text-2xl font-semibold text-lila-800">Administración</h1>
         <p className="mt-1 text-center text-sm text-lila-900/60">Ingresa para gestionar tu tienda 💜</p>
 
         <button onClick={google} className="btn btn-ghost mt-6 w-full">🔑 Continuar con Google</button>
@@ -93,7 +94,7 @@ export default function Admin() {
   if (!supabaseEnabled) {
     return (
       <div className="mx-auto max-w-xl px-4 py-20 text-center">
-        <h1 className="font-display text-3xl font-semibold text-lila-800">Administración</h1>
+        <h1 className="font-heading text-3xl font-semibold text-lila-800">Administración</h1>
         <p className="mt-4 rounded-3xl bg-lila-100 p-6 text-lila-800">
           Supabase aún no está conectado. Agrega <code>NEXT_PUBLIC_SUPABASE_URL</code> y{" "}
           <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> (ver <code>README.md</code>). Mientras tanto el sitio muestra el
@@ -103,7 +104,7 @@ export default function Admin() {
     );
   }
 
-  if (!ready) return <p className="py-20 text-center text-lila-700">Cargando…</p>;
+  if (!ready) return <Loading />;
   if (!session) return <Login />;
 
   if (isAdmin === null) return <p className="py-20 text-center text-lila-700">Verificando permisos…</p>;
@@ -127,7 +128,7 @@ export default function Admin() {
     <div className="mx-auto max-w-5xl px-4 py-10">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-lila-800">Panel de administración</h1>
+          <h1 className="font-heading text-3xl font-semibold text-lila-800">Panel de administración</h1>
           <p className="text-sm text-lila-900/60">Sesión: {session.user.email}</p>
         </div>
         <button className="btn btn-ghost !py-2" onClick={logout}>Cerrar sesión</button>

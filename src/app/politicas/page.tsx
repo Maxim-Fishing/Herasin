@@ -45,7 +45,7 @@ export default function Politicas() {
           {resumen.map(([icon, big, small]) => (
             <li key={big} className="rounded-[1.5rem] border-2 border-lila-100 bg-white/85 p-4 text-center">
               <div className="text-2xl">{icon}</div>
-              <p className="mt-1 font-display text-lg font-semibold text-lila-700">{big}</p>
+              <p className="mt-1 font-heading text-lg font-semibold text-lila-700">{big}</p>
               <p className="text-xs font-medium text-lila-900/60">{small}</p>
             </li>
           ))}

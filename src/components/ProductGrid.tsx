@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import ProductCard from "./ProductCard";
 import CardGrid from "./CardGrid";
+import { Nina } from "./Pic";
 import { useData } from "@/lib/store";
 import type { Product } from "@/lib/types";
 
@@ -59,9 +60,11 @@ export default function ProductGrid({
       </div>
 
       {filtered.length === 0 ? (
-        <p className="rounded-3xl bg-lila-50 p-10 text-center text-lila-700">
-          Aún no hay productos aquí. ¡Pronto agregaremos más! 💜
-        </p>
+        <div className="flex flex-col items-center gap-3 rounded-3xl border-[3px] border-dotted border-cafe/25 bg-lila-50/80 p-10 text-center">
+          <Nina className="animate-float h-24 w-auto" />
+          <p className="font-script text-lg text-lila-600">Aún no hay productos aquí</p>
+          <p className="text-sm text-lila-900/65">¡Pronto agregaremos más! 💜</p>
+        </div>
       ) : (
         <CardGrid>
           {filtered.map((p) => (

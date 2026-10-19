@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -29,7 +30,7 @@ function Ficha() {
   if (!product) {
     return (
       <Section>
-        <p className="text-center text-lila-700">{loading ? "Cargando…" : "No encontramos este producto."}</p>
+        {loading ? <Loading /> : <p className="text-center text-lila-700">No encontramos este producto.</p>}
         <p className="mt-4 text-center"><BackLink href="/categorias">Ver categorías</BackLink></p>
       </Section>
     );
@@ -101,7 +102,7 @@ function Ficha() {
             </p>
             <p className="mt-4 whitespace-pre-line text-lila-900/80">{product.description}</p>
 
-            <h2 className="mt-7 font-display text-lg font-semibold text-lila-800">✨ Personalízalo</h2>
+            <h2 className="mt-7 font-heading text-lg font-semibold text-lila-800">✨ Personalízalo</h2>
             <p className="text-sm text-lila-900/60">Toca lo que quieres personalizar y escribe el dato; irá en tu mensaje.</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {product.options.map((o) => {
@@ -175,7 +176,7 @@ function Ficha() {
 
             {/* Avisos fijos */}
             <div className="mt-6 rounded-[1.5rem] border-[3px] border-dotted border-cafe/30 bg-lila-50 p-4">
-              <p className="font-display font-semibold text-lila-800">Importante</p>
+              <p className="font-heading font-semibold text-lila-800">Importante</p>
               <ul className="mt-2 space-y-1.5 text-sm text-lila-900/80">
                 {PRODUCT_NOTICES.map((n) => (
                   <li key={n} className="flex gap-2"><span className="text-lila-500">✦</span>{n}</li>
@@ -204,7 +205,7 @@ function Ficha() {
 
 export default function ProductoPage() {
   return (
-    <Suspense fallback={<p className="py-20 text-center text-lila-700">Cargando…</p>}>
+    <Suspense fallback={<Loading />}>
       <Ficha />
     </Suspense>
   );
