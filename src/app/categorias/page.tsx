@@ -17,6 +17,7 @@ export default function Categorias() {
         ) : (
           <div className="grid gap-6 md:grid-cols-3">
             {[...categories].sort((a, b) => a.order - b.order).map((c) => {
+              const cat = c;
               const count = products.filter((p) => p.categoryId === c.id).length;
               return (
                 <Link
@@ -30,7 +31,9 @@ export default function Categorias() {
                   <div className="p-4">
                     <h2 className="font-display text-2xl font-semibold text-lila-800">{c.emoji} {c.name}</h2>
                     <p className="mt-1 text-sm text-lila-900/70">{c.description}</p>
-                    <p className="mt-3 text-sm font-bold text-lila-600">{count} productos →</p>
+                    <p className="mt-3 text-sm font-bold text-lila-600">
+                      {count} productos{(cat.subcategories ?? []).length > 0 ? ` · ${(cat.subcategories ?? []).length} subcategorías` : ""} →
+                    </p>
                   </div>
                 </Link>
               );

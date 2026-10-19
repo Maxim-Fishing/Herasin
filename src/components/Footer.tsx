@@ -27,6 +27,7 @@ export default function Footer() {
             <li><Link href="/como-lo-hacemos" className="hover:text-lila-700">¿Cómo lo hacemos?</Link></li>
             <li><Link href="/temporadas" className="hover:text-lila-700">Temporadas</Link></li>
             <li><Link href="/categorias" className="hover:text-lila-700">Categorías</Link></li>
+            <li><Link href="/politicas" className="hover:text-lila-700">Políticas</Link></li>
             <li><Link href="/contacto" className="hover:text-lila-700">Contacto</Link></li>
           </ul>
         </div>

@@ -11,6 +11,7 @@ const links = [
   { href: "/como-lo-hacemos", label: "¿Cómo lo hacemos?" },
   { href: "/temporadas", label: "Temporadas" },
   { href: "/categorias", label: "Categorías" },
+  { href: "/politicas", label: "Políticas" },
   { href: "/contacto", label: "Contacto" },
 ];
 

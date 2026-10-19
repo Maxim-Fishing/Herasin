@@ -1,4 +1,6 @@
 import type { Category, Product, Season, SiteSettings } from "./types";
+import { feSubs, papeleriaSubs, resinaSubs, sublimacionSubs } from "./subcategories";
+import { defaultPolicies } from "./policies";
 
 const f = (n: number) => `/fotos/${String(n).padStart(3, "0")}.jpg`;
 
@@ -60,6 +62,7 @@ export const defaultSettings: SiteSettings = {
       a: "Sí, damos cursos presenciales en Neiva, desde cero. Mira la sección de cursos o escríbenos para la próxima fecha.",
     },
   ],
+  policies: defaultPolicies,
   popup: {
     enabled: true,
     seasonId: "s-dic",
@@ -84,9 +87,10 @@ export const demoSeasons: Season[] = [
 ];
 
 export const demoCategories: Category[] = [
-  { id: "c-res", name: "Resina", slug: "resina", description: "Piezas únicas en resina: recordatorios, llaveros, cuadros, agendas y más.", image: f(12), emoji: "💎", order: 1 },
-  { id: "c-sub", name: "Sublimación", slug: "sublimacion", description: "Diseños a todo color en tazas, botellas, forros y más.", image: f(27), emoji: "🎨", order: 2 },
-  { id: "c-pap", name: "Papelería creativa", slug: "papeleria-creativa", description: "Agendas, libretas, calendarios y lapiceros con tu estilo.", image: f(108), emoji: "📓", order: 3 },
+  { id: "c-res", name: "Resina", slug: "resina", description: "Piezas únicas en resina: recordatorios, llaveros, cuadros, agendas y más.", image: f(12), emoji: "💎", order: 1, subcategories: resinaSubs },
+  { id: "c-fe", name: "Línea de fe", slug: "linea-de-fe", description: "Caminando con Jesús: detalles con mensajes de fe y esperanza.", image: f(3), emoji: "✝️", order: 2, subcategories: feSubs },
+  { id: "c-sub", name: "Sublimación", slug: "sublimacion", description: "Diseños a todo color en camisetas, mugs, termos, gorras y más.", image: f(27), emoji: "🎨", order: 3, subcategories: sublimacionSubs, note: "Marcamos en: marcación en DTF textil · marcación en DTF UV." },
+  { id: "c-pap", name: "Papelería creativa", slug: "papeleria-creativa", description: "Agendas, libretas, calendarios y planeadores con tu estilo, y línea escolar.", image: f(108), emoji: "📓", order: 4, subcategories: papeleriaSubs },
 ];
 
 type P = {
@@ -297,13 +301,13 @@ const raw: P[] = [
     imgs: [4, 82, 133],
   },
   {
-    id: "frasco-promesas", name: "Frasco de promesas bíblicas", cat: "c-pap", seasons: ["s-fe", "s-madre"],
+    id: "frasco-promesas", name: "Frasco de promesas bíblicas", cat: "c-fe", seasons: ["s-fe", "s-madre"],
     desc: "Frasco con más de 100 promesas bíblicas organizadas por emociones (cuando estés feliz, triste, ansiosa, bendecida…). Un detalle para encontrar paz, esperanza y fortaleza.",
     options: ["Colores del frasco", "Nombre", "Lazo y decoración"],
     imgs: [20, 38],
   },
   {
-    id: "caminando-con-jesus", name: "Línea «Caminando con Jesús»", cat: "c-pap", seasons: ["s-fe"],
+    id: "caminando-con-jesus", name: "Línea «Caminando con Jesús»", cat: "c-fe", seasons: ["s-fe"],
     desc: "Una línea con propósito: puedes escoger entre distintas frases y reflexiones de Jesús, para ti o para alguien especial que lo necesite. Se aplica en botellas, tazas y papelería con la misma temática.",
     options: ["Frase o reflexión", "Producto (taza, botella, libreta…)", "Nombre"],
     imgs: [3, 1],
@@ -316,6 +320,42 @@ const raw: P[] = [
   },
 ];
 
+/** Subcategoría de cada producto de ejemplo (en Supabase la asigna la administradora). */
+const SUB_OF: Record<string, string> = {
+  "recordatorio-15-anos": "recordatorios-15-anos",
+  "recordatorio-mariposa": "recordatorios-15-anos",
+  "recordatorio-boda": "recordatorios-boda",
+  "recordatorio-baby-shower": "recordatorios-baby-shower",
+  "recuerdo-nacimiento": "eternizados-de-nacimiento-de-bebe",
+  "llavero-cabo-de-ano": "recordatorios-cabo-de-ano",
+  "llavero-grado": "recordatorios-de-graduacion",
+  "llavero-nombre": "llaveros-tematicos",
+  "llavero-didactico": "kids",
+  "placa-mascota": "accesorios",
+  "imanes-resina": "accesorios",
+  portacarnet: "accesorios",
+  "portavasos-resina": "accesorios",
+  "ajedrez-resina": "accesorios",
+  "placa-reconocimiento": "recordatorios-corporativos",
+  "lampara-led": "cuadros",
+  "recordatorio-navideno": "recordatorios-corporativos",
+  "souvenir-mujer": "recordatorios-corporativos",
+  "caja-regalo-stitch": "kids",
+  "letrero-resina": "recordatorios-corporativos",
+  "termo-stanley": "termos",
+  "vaso-termico-brillos": "termos",
+  "vaso-copa": "termos",
+  "termo-regalo": "termos",
+  "taza-personalizada": "mugs",
+  "botella-personalizada": "termos",
+  "botella-infantil": "vasos",
+  "libreta-flores": "libretas",
+  "agenda-resina": "agendas",
+  "calendario-escritorio": "calendarios",
+  "frasco-promesas": "combos",
+  "caminando-con-jesus": "combos",
+};
+
 export const demoProducts: Product[] = raw.map((p) => ({
   id: p.id,
   name: p.name,
@@ -324,6 +364,7 @@ export const demoProducts: Product[] = raw.map((p) => ({
   images: p.imgs.map(f),
   options: p.options,
   categoryId: p.cat,
+  subcategoryId: SUB_OF[p.id],
   seasonIds: p.seasons,
   featured: Boolean(p.featured),
   active: true,

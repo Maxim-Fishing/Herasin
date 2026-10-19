@@ -148,6 +148,24 @@ export function SettingsAdmin() {
       </Card>
 
       <Card>
+        <h2 className="mb-1 font-display text-2xl font-bold text-lila-800">Políticas</h2>
+        <p className="mb-4 text-sm text-lila-900/60">Cada línea del texto se muestra como un punto. Una línea que termina en «:» se muestra como subtítulo.</p>
+        <div className="space-y-3">
+          {draft.policies.map((p, i) => (
+            <div key={i} className="space-y-2 rounded-2xl bg-lila-50 p-3">
+              <div className="flex gap-2">
+                <input className="input !w-16 text-center" aria-label="Emoji" value={p.icon} onChange={(e) => set({ policies: draft.policies.map((x, j) => (j === i ? { ...x, icon: e.target.value } : x)) })} />
+                <input className="input" placeholder="Título" value={p.title} onChange={(e) => set({ policies: draft.policies.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)) })} />
+              </div>
+              <textarea className="input min-h-32" placeholder="Un punto por línea" value={p.text} onChange={(e) => set({ policies: draft.policies.map((x, j) => (j === i ? { ...x, text: e.target.value } : x)) })} />
+              <button className="text-sm text-red-600" onClick={() => set({ policies: draft.policies.filter((_, j) => j !== i) })}>Quitar</button>
+            </div>
+          ))}
+          <button className="btn btn-ghost !py-2 text-sm" onClick={() => set({ policies: [...draft.policies, { icon: "📌", title: "", text: "" }] })}>＋ Agregar política</button>
+        </div>
+      </Card>
+
+      <Card>
         <h2 className="mb-4 font-display text-2xl font-bold text-lila-800">Preguntas frecuentes</h2>
         <div className="space-y-3">
           {draft.faq.map((f, i) => (

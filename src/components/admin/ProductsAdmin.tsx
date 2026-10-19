@@ -79,11 +79,25 @@ export default function ProductsAdmin() {
           <ImagesField value={edit.images} onChange={(images) => set({ images })} onBusyChange={setUploading} />
           <TagsField label="Formas de personalizar" value={edit.options} onChange={(options) => set({ options })} hint="Cada una aparece como una etiqueta en la ficha del producto." />
           <Field label="Categoría">
-            <select className="input" value={edit.categoryId} onChange={(e) => set({ categoryId: e.target.value })}>
+            <select className="input" value={edit.categoryId} onChange={(e) => set({ categoryId: e.target.value, subcategoryId: undefined })}>
               <option value="">— Elegir —</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </Field>
+          {(() => {
+            const subs = categories.find((c) => c.id === edit.categoryId)?.subcategories ?? [];
+            if (!subs.length) return null;
+            return (
+              <Field label="Subcategoría" hint="Es la «cajita» donde aparecerá dentro de la categoría.">
+                <select className="input" value={edit.subcategoryId ?? ""} onChange={(e) => set({ subcategoryId: e.target.value || undefined })}>
+                  <option value="">— Sin subcategoría —</option>
+                  {subs.map((s) => (
+                    <option key={s.id + s.group} value={s.id}>{s.group ? `${s.group} · ${s.name}` : s.name}</option>
+                  ))}
+                </select>
+              </Field>
+            );
+          })()}
           <div>
             <span className="mb-1 block text-sm font-semibold text-lila-800">Temporadas</span>
             <div className="flex flex-wrap gap-2">

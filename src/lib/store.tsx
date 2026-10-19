@@ -55,6 +55,13 @@ function mergeSettings(s: Partial<SiteSettings> | undefined): SiteSettings {
   };
 }
 
+/** Categorías guardadas antes de existir las subcategorías: se completan con las de ejemplo. */
+function withDefaultSubs(c: Category): Category {
+  if (c.subcategories !== undefined) return c;
+  const def = demoCategories.find((d) => d.slug === c.slug);
+  return def ? { ...c, subcategories: def.subcategories, note: c.note ?? def.note } : { ...c, subcategories: [] };
+}
+
 type Row<T> = { id: string; data: Omit<T, "id"> };
 const unpack = <T,>(rows: Row<T>[] | null): T[] =>
   (rows ?? []).map((r) => ({ ...r.data, id: r.id }) as T);
@@ -73,7 +80,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setData({
       products: unpack<Product>(p.data as Row<Product>[] | null),
       seasons: unpack<Season>(s.data as Row<Season>[] | null),
-      categories: unpack<Category>(c.data as Row<Category>[] | null),
+      categories: unpack<Category>(c.data as Row<Category>[] | null).map(withDefaultSubs),
       settings: mergeSettings(st.data?.data as Partial<SiteSettings> | undefined),
       loading: false,
       demo: false,
@@ -144,6 +151,30 @@ export async function importSeed() {
   fail((await db.from("products").upsert(pack(demoProducts))).error);
   fail((await db.from("settings").upsert({ id: "site", data: defaultSettings })).error);
   notifyWrite();
+}
+
+/**
+ * Suma las subcategorías y la categoría «Línea de fe» sin tocar productos, precios ni textos.
+ * Devuelve cuántas categorías se crearon o actualizaron.
+ */
+export async function syncCategories(): Promise<number> {
+  const db = requireDb();
+  const { data, error } = await db.from("categories").select("id,data");
+  fail(error);
+  const existing = unpack<Category>(data as Row<Category>[] | null);
+  const rows: { id: string; data: Omit<Category, "id"> }[] = [];
+  for (const def of demoCategories) {
+    const found = existing.find((c) => c.slug === def.slug);
+    const { id, ...rest } = def;
+    if (!found) rows.push({ id, data: rest });
+    else if (found.subcategories === undefined) {
+      const { id: foundId, ...cur } = found;
+      rows.push({ id: foundId, data: { ...cur, subcategories: def.subcategories, note: cur.note ?? def.note } });
+    }
+  }
+  if (rows.length) fail((await db.from("categories").upsert(rows)).error);
+  notifyWrite();
+  return rows.length;
 }
 
 /* ---------- Administradores ---------- */

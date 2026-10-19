@@ -8,6 +8,9 @@ export type Season = {
   order: number;
 };
 
+/** Subcategoría dentro de una categoría; `group` las agrupa bajo un título (ej. «Camisetas»). */
+export type Subcategory = { id: string; name: string; group: string };
+
 export type Category = {
   id: string;
   name: string;
@@ -16,7 +19,13 @@ export type Category = {
   image: string;
   emoji: string;
   order: number;
+  /** Si no existe (categorías antiguas) se usan las de ejemplo; `[]` = sin subcategorías. */
+  subcategories?: Subcategory[];
+  /** Texto aparte, ej. «Marcamos en: DTF textil, DTF UV». */
+  note?: string;
 };
+
+export type Policy = { icon: string; title: string; text: string };
 
 export type Product = {
   id: string;
@@ -27,6 +36,8 @@ export type Product = {
   /** Formas de personalizar: "Nombre", "Foto", "Frase", "Color"... */
   options: string[];
   categoryId: string;
+  /** Subcategoría dentro de la categoría (opcional). */
+  subcategoryId?: string;
   seasonIds: string[];
   featured: boolean;
   active: boolean;
@@ -75,5 +86,6 @@ export type SiteSettings = {
   course: Course;
   testimonials: Testimonial[];
   faq: Faq[];
+  policies: Policy[];
   popup: SeasonPopup;
 };

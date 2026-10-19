@@ -181,6 +181,9 @@ function Ficha() {
                   <li key={n} className="flex gap-2"><span className="text-lila-500">✦</span>{n}</li>
                 ))}
               </ul>
+              <Link href="/politicas" className="mt-3 inline-block text-sm font-bold text-lila-600 hover:underline">
+                Ver todas las políticas →
+              </Link>
             </div>
           </div>
         </div>
