@@ -81,7 +81,7 @@ export function FaithMarquee({ category, products }: { category: Category; produ
     >
       <div className="relative aspect-[3/4] overflow-hidden rounded-[1.1rem] bg-lila-100">
         {it.cover ? (
-          <Pic src={it.cover} alt={it.sub.name} className="h-full w-full transition duration-500 group-hover:scale-105" />
+          <Pic src={it.cover} alt={it.sub.name} fit="fill" className="h-full w-full transition duration-500 group-hover:scale-105" />
         ) : (
           <div className="bg-hearts-soft flex h-full flex-col items-center justify-center gap-1">
             <Nina className="h-20 w-auto opacity-90" />

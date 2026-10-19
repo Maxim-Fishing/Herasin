@@ -2,6 +2,11 @@
 import type { CSSProperties } from "react";
 import { asset } from "@/lib/assets";
 
+/**
+ * fit="cover" (por defecto) recorta la foto para llenar el marco.
+ * fit="fill" muestra la foto COMPLETA y rellena los lados con una copia difuminada de ella
+ * (como en Instagram): si la foto no es 3:4, no se corta nada.
+ */
 export default function Pic({
   src,
   alt,
@@ -9,6 +14,7 @@ export default function Pic({
   className = "",
   eager = false,
   style,
+  fit = "cover",
 }: {
   src?: string;
   alt: string;
@@ -16,7 +22,20 @@ export default function Pic({
   className?: string;
   eager?: boolean;
   style?: CSSProperties;
+  fit?: "cover" | "fill";
 }) {
+  if (src && fit === "fill") {
+    const url = asset(src);
+    const loading = eager ? "eager" : "lazy";
+    // Si quien llama ya posiciona el marco (absolute/relative/fixed), no se le agrega otra posición.
+    const pos = /\b(absolute|relative|fixed|sticky)\b/.test(className) ? "" : "relative";
+    return (
+      <span className={`block overflow-hidden ${pos} ${className}`} style={style}>
+        <img src={url} alt="" aria-hidden loading={loading} className="absolute inset-0 h-full w-full scale-125 object-cover opacity-75 blur-lg" />
+        <img src={url} alt={alt} loading={loading} className="absolute inset-0 h-full w-full object-contain" />
+      </span>
+    );
+  }
   if (src) {
     return (
       <img

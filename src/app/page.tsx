@@ -90,7 +90,7 @@ export default function Home() {
                   className="group overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-2 text-center transition hover:-translate-y-1 hover:shadow-xl hover:shadow-lila-200"
                 >
                   <div className="overflow-hidden rounded-[1.25rem]">
-                    <Pic src={kitCover(s)} alt={s.name} emoji={s.emoji} className="aspect-[4/5] w-full transition duration-500 group-hover:scale-105" />
+                    <Pic src={kitCover(s)} alt={s.name} emoji={s.emoji} fit="fill" className="aspect-[3/4] w-full transition duration-500 group-hover:scale-105" />
                   </div>
                   <p className="mt-3 font-heading font-semibold text-lila-800">{s.emoji} Kit {s.name}</p>
                   <p className="pb-2 text-xs font-medium text-lila-900/60">{n} piezas</p>
@@ -119,7 +119,7 @@ export default function Home() {
       {/* CATEGORÍAS */}
       {categories.length > 0 && (
         <Section title="Explora por categoría" tint>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4">
             {[...categories].sort((a, b) => a.order - b.order).map((c) => (
               <Link
                 key={c.id}
@@ -127,7 +127,7 @@ export default function Home() {
                 className="group overflow-hidden rounded-[1.75rem] border-[3px] border-dotted border-cafe/30 bg-white p-2 text-center transition hover:-translate-y-1 hover:shadow-xl hover:shadow-lila-200"
               >
                 <div className="overflow-hidden rounded-[1.25rem]">
-                  <Pic src={c.image} alt={c.name} emoji={c.emoji} className="aspect-[16/10] w-full transition duration-500 group-hover:scale-105" />
+                  <Pic src={c.image} alt={c.name} emoji={c.emoji} fit="fill" className="aspect-[4/5] w-full transition duration-500 group-hover:scale-105" />
                 </div>
                 <div className="p-4">
                   <h3 className="font-display text-2xl font-semibold text-lila-800">{c.emoji} {c.name}</h3>

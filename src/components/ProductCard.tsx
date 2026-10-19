@@ -51,6 +51,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <Pic
               key={src + k}
               src={src}
+              fit="fill"
               alt={k === 0 ? product.name : ""}
               eager={k > 0}
               className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${k === i ? "opacity-100" : "opacity-0"}`}

@@ -40,9 +40,9 @@ function Box({
     >
       <div className="relative overflow-hidden rounded-[1.1rem] bg-lila-100">
         {cover ? (
-          <Pic src={cover} alt={sub.name} className="aspect-[4/3] w-full transition duration-500 group-hover:scale-105" />
+          <Pic src={cover} alt={sub.name} fit="fill" className="aspect-[4/5] w-full transition duration-500 group-hover:scale-105" />
         ) : (
-          <div className="bg-hearts-soft flex aspect-[4/3] w-full flex-col items-center justify-center gap-1">
+          <div className="bg-hearts-soft flex aspect-[4/5] w-full flex-col items-center justify-center gap-1">
             <Nina className="h-[4.5rem] w-auto opacity-90" />
             <span aria-hidden className="animate-twinkle text-sm text-lila-400">✦ ✦</span>
           </div>

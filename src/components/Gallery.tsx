@@ -145,6 +145,7 @@ export default function Gallery({
             src={images[cur]}
             alt={alt}
             emoji={emoji}
+            fit="fill"
             eager
             className="h-full w-full text-8xl transition-transform duration-200 ease-out"
             style={zoom ? { transform: "scale(2.2)", transformOrigin: `${zoom.x}% ${zoom.y}%` } : undefined}
